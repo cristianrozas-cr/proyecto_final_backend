@@ -5,7 +5,7 @@ const router = Router()
 
 router.get("/galeria", publicacionController.readGaleria);
 
-// GET PUBLICACIONES PARA CATALOGO
+// GET PUBLICACIONES PARA CATALOGO - LISTO-> Modificado con JOIN para incluir IMG PORTADA
 // POST REGISTRO USUARIO
 // POST LOGIN recibir TOKEN 
 // GET LOGIN USUARIO validar token
