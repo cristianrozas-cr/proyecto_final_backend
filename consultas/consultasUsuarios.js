@@ -1,14 +1,8 @@
-const { Pool } = require("pg");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { query } = require("express");
 
-const pool = new Pool({
-    host: "localhost",
-    user: "postgres",
-    password: "1234",
-    database: "tecno_latam"
-});
+
 
 const registrarUsuario = async ({ email, password, nombre, apellido, telefono, img_perfil}) => {
     const hashedPassword = await bcrypt.hash(password, 10);
