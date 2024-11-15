@@ -16,7 +16,7 @@ app.listen(port, () => console.log(`Servidor iniciado en puerto ${port}!`));
 
 app.get('/usuarios', async (req, res) => {
     try {
-        const result = await infoUsuario(); // Cambia 'users' a una tabla existente
+        const result = await infoUsuario();
         res.json(result.rows); // Devuelve los registros en formato JSON
     } catch (error) {
         console.error('Error al ejecutar la consulta:', error);

@@ -4,7 +4,7 @@ import jsonwebtoken from 'jsonwebtoken';
 
 const infoUsuario = async () => {
 
-    const resultado = await pool.query('SELECT * FROM usuarios'); // Cambia 'users' a una tabla existente
+    const resultado = await pool.query('SELECT * FROM usuarios');
 
     return resultado
 }
