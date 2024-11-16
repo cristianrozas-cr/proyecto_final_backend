@@ -1,10 +1,15 @@
 import { Router } from "express";
 import { publicacionController } from "../controllers/publicacionController.js";
+import { usuariosController } from "../controllers/usuariosController.js";
 
 const router = Router()
 
+// Desplegar Galeria
 router.get("/galeria", publicacionController.readGaleria);
-
+// Registrar Uusario
+router.post("/registro", usuariosController.crearUsuario,)
+// Agregar publicacion
+router.post("/publicaciones", publicacionController.agregarPublicacion);
 
 //Publicaciones
 // GET PUBLICACIONES PARA CATALOGO - LISTO-> Modificado con JOIN para incluir IMG PORTADA
