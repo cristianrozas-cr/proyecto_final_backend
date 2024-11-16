@@ -9,7 +9,7 @@ router.post("/publicaciones", publicacionController.agregarPublicacion);
 
 //Publicaciones
 // GET PUBLICACIONES PARA CATALOGO - LISTO-> Modificado con JOIN para incluir IMG PORTADA
-// POST PUBLICACION - cristian
+// POST PUBLICACION - Lista
 // GET PUBLICACIONES: ID
 // GET PUBLICACIONES DE USUARIO
 // DELETE PUBLICACION ID
