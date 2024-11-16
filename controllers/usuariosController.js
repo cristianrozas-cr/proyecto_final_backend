@@ -16,24 +16,46 @@ export const crearUsuario = async (req, res) => {
     }
 
     try {
-        const usuario = await consultasUsuarios.verificarUsuario({ email, telefono });
-        if (usuario) {
+
+        const existingUser = await consultasUsuarios.verificarUsuario({ email, telefono })
+        if (existingUser.rowCount > 0) {
+
             return res.status(400).json({ error: 'El email o teléfono ya están en uso' });
         }
 
+        }
+
         const newUser = await consultasUsuarios.registrarUsuario({
-            email, password, nombre, apellido, telefono, img_perfil
+            email,
+            password: hashedPassword,
+            nombre,
+            apellido,
+            telefono,
+            img_perfil,
         });
 
+        if (!newUser) {
+            return res.status(500).json({ error: 'No se pudo registrar al usuario' });
+        }
+
         const token = jwt.sign(
-            { id: newUser.id, email: newUser.email },
+            {
+                id: newUser.id,
+                email: newUser.email,
+            },
             JWT_SECRET,
             { expiresIn: '2h' } // Token válido por 2 horas
         );
-
+        console.log(token)
+        // Responder con el token y datos del usuario
         res.status(201).json({
             message: 'Usuario registrado con éxito',
-            user: newUser,
+            user: {
+                id: newUser.id,
+                email: newUser.email,
+                nombre: newUser.nombre,
+                apellido: newUser.apellido,
+            },
             token,
         });
     } catch (err) {
