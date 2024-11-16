@@ -6,7 +6,7 @@ dotenv.config();  // Cargar las variables de entorno desde el archivo .env
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const crearUsuario = async (req, res) => {
+export const crearUsuario = async (req, res) => {
     console.log(req.body);
     const { email, password, nombre, apellido, telefono, img_perfil } = req.body;
 
@@ -16,9 +16,12 @@ const crearUsuario = async (req, res) => {
     }
 
     try {
+
         const existingUser = await consultasUsuarios.verificarUsuario({ email, telefono })
         if (existingUser.rowCount > 0) {
+
             return res.status(400).json({ error: 'El email o teléfono ya están en uso' });
+        }
 
         }
 
@@ -55,12 +58,8 @@ const crearUsuario = async (req, res) => {
             },
             token,
         });
-
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Ocurrió un error al registrar el usuario' });
     }
 };
-
-
-export const usuariosController = { crearUsuario }

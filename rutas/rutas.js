@@ -1,12 +1,17 @@
 import { Router } from "express";
 import { publicacionController } from "../controllers/publicacioncontroller.js";
-
+import { agregarProducto, obtenerProductos, actualizarCantidad, eliminarProducto } from '../controllers/carritocontroller.js';
+import {crearUsuario} from '../controllers/usuariosController.js';
 const router = Router()
 
 // Desplegar Galeria
 router.get("/galeria", publicacionController.readGaleria);
 router.post("/publicaciones", publicacionController.agregarPublicacion);
-
+router.post('/carrito', agregarProducto);
+router.get('/carrito/:usuario_id', obtenerProductos);
+router.put('/carrito', actualizarCantidad);
+router.delete('/carrito', eliminarProducto);
+router.post("/usuario", crearUsuario);
 //Publicaciones
 // GET PUBLICACIONES PARA CATALOGO - LISTO-> Modificado con JOIN para incluir IMG PORTADA
 // POST PUBLICACION - Lista
