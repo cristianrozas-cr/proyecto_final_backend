@@ -11,17 +11,17 @@ const readGaleria = async (req, res) => {
         return res.status(400).json({ message: "Invalid page number, number > 0" });
     }
 
-    try {
+    // try {
         const publicaciones = await consultasPublicaciones.obtenerGaleria({ limit, order, page });
         return res.json(publicaciones);
-    } catch (error) {
-        console.log(error);
-        if (error.code) {
-            const { code, message } = getDatabaseError(error.code);
-            return res.status(code).json({ message });
-        }
-        return res.status(500).json({ message: "Internal server error" });
-    }
+    // } catch (error) {
+    //     console.log(error);
+    //     if (error.code) {
+    //         const { code, message } = getDatabaseError(error.code);
+    //         return res.status(code).json({ message });
+    //     }
+    //     return res.status(500).json({ message: "Internal server error" });
+    // }
 };
 
 const leerGaleria = async (req, res) => {
