@@ -7,20 +7,23 @@ import bcrypt from 'bcryptjs/dist/bcrypt.js';
 const verificarUsuario = async ({ email, telefono }) => {
     const query = `
             SELECT * FROM usuarios 
-            WHERE email = %s OR telefono = %s;
+            WHERE email = '%s' OR telefono = '%s';
         `;
     const formattedQuery = format(query, email, telefono)
+
     const results = await pool.query(formattedQuery);
-    return results.rows[0]
+    console.log(results)
+    return results
 }
 
 const registrarUsuario = async ({ email, password, nombre, apellido, telefono, img_perfil }) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const query = `
-        INSERT INTO usuarios values (email, password, nombre, apellido, telefono, img_perfil)
-        VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+        INSERT INTO usuarios values (%s, %s, %s, %s, %s, %s)`;
     const values = [email, hashedPassword, nombre, apellido, telefono, img_perfil];
-    const results = await pool.query(query, values);
+    const formattedQuery = format(query, values)
+
+    const results = await pool.query(formattedQuery);
     const newUser = results.rows[0]
     return newUser;
 };
