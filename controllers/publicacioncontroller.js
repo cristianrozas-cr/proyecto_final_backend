@@ -1,6 +1,8 @@
 import { consultasPublicaciones } from "../consultas/consultasPublicaciones.js";
 import { getDatabaseError } from "../errors/database.error.js";
 
+
+// GET para mostrar galeria con publicaciones
 const readGaleria = async (req, res) => {
     const { limit = 8, order = "ASC", page = 1 } = req.query;
 
@@ -27,7 +29,7 @@ const readGaleria = async (req, res) => {
 
 const agregarPublicacion = async (req, res) => {
     try {
-        const nuevaPublicacion = await consultasPublicaciones.agregarPublicacion(req.body);
+        const nuevaPublicacion = await consultasPublicaciones.agregarPublicacionDB(req.body);
         res.status(201).json({
             message: "Publicación agregada con éxito",
             publicacion: nuevaPublicacion,

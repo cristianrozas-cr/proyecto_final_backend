@@ -1,14 +1,10 @@
 import { Router } from "express";
-import { publicacionController } from "../controllers/publicacionController.js";
-import { usuariosController } from "../controllers/usuariosController.js";
+import { publicacionController } from "../controllers/publicacioncontroller.js";
 
 const router = Router()
 
 // Desplegar Galeria
 router.get("/galeria", publicacionController.readGaleria);
-// Registrar Uusario
-router.post("/registro", usuariosController.crearUsuario,)
-// Agregar publicacion
 router.post("/publicaciones", publicacionController.agregarPublicacion);
 
 //Publicaciones

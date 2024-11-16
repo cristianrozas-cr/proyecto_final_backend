@@ -14,7 +14,6 @@ app.use("/tecno", router);
 
 // app.use(requestLogger);
 
-
 app.listen(port, () => console.log(`Servidor iniciado en puerto ${port}!`));
 
 app.get('/usuarios', async (req, res) => {
