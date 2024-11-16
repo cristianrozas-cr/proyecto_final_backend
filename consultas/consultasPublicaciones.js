@@ -15,7 +15,24 @@ const obtenerGaleria = async ({ limit = 8, page = 1 }) => {
   //Calcula el número total de páginas
   const total_pages = Math.ceil(total_rows / limit);
 
-  const query = "SELECT * FROM publicaciones LIMIT %s OFFSET %s";
+  const query = `
+    SELECT 
+        p.id AS publicacion_id,
+        p.titulo, 
+        p.descripcion, 
+        p.precio, 
+        p.fecha_publicacion,
+        p.id_vendedor, 
+        i.img1_portada 
+        
+    FROM 
+        publicaciones p 
+    LEFT JOIN 
+        imagenes i 
+    ON 
+        p.id = i.publicacion_id
+    LIMIT %s OFFSET %s;
+`;
   const offset = (page - 1) * limit;
   const formattedQuery = format(query, limit, offset);
   const { rows } = await pool.query(formattedQuery);

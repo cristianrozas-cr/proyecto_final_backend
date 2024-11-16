@@ -23,7 +23,7 @@ export const crearUsuario = async (req, res) => {
             return res.status(400).json({ error: 'El email o teléfono ya están en uso' });
         }
 
-        }
+
 
         const newUser = await consultasUsuarios.registrarUsuario({
             email,
