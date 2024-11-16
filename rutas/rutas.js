@@ -1,13 +1,14 @@
 import { Router } from "express";
-import { publicacionController } from "../controllers/publicacioncontroller.js"
+import { publicacionController } from "../controllers/publicacioncontroller.js";
 
 const router = Router()
 
+// Desplegar Galeria
 router.get("/galeria", publicacionController.readGaleria);
 router.post("/publicaciones", publicacionController.agregarPublicacion);
 
 //Publicaciones
-// GET PUBLICACIONES PARA CATALOGO - LISTO
+// GET PUBLICACIONES PARA CATALOGO - LISTO-> Modificado con JOIN para incluir IMG PORTADA
 // POST PUBLICACION - cristian
 // GET PUBLICACIONES: ID
 // GET PUBLICACIONES DE USUARIO
