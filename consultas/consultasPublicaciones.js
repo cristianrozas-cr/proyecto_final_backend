@@ -67,6 +67,14 @@ const agregarPublicacionDB = async ({ titulo, descripcion, categoria_id, precio,
   }
 };
 
+//Mostrar detalle de una publicacion
+const detallePublicacion = async (id) => {
+
+  const consulta = "SELECT * from publicaciones WHERE id = $1"
+  const values = [id]
+  const { rows } = await pool.query(consulta, values)
+  return rows;
+}
 
 
 export const consultasPublicaciones = { obtenerGaleria, agregarPublicacionDB }
