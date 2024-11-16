@@ -1,5 +1,7 @@
 import { consultasPublicaciones } from "../consultas/consultasPublicaciones.js";
 
+
+// GET para mostrar galeria con publicaciones
 const readGaleria = async (req, res) => {
     const { limit = 8, order = "ASC", page = 1 } = req.query;
 
@@ -48,4 +50,20 @@ const leerGaleria = async (req, res) => {
     }
 };
 
-export const publicacionController = { readGaleria, leerGaleria }
+//POST para agregar publicaciones
+const agregarPublicacion = async (req, res) => {
+    try {
+        const nuevaPublicacion = await consultasPublicaciones.agregarPublicacionDB(req.body);
+        res.status(201).json({
+            message: "Publicación agregada con éxito",
+            publicacion: nuevaPublicacion,
+          });
+        } catch (error) {
+            res.status(400).json({
+              message: "No se pudo agregar la publicación",
+              error: error.message,
+            });
+          }
+        };
+
+export const publicacionController = { readGaleria, leerGaleria, agregarPublicacion }

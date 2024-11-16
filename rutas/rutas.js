@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { publicacionController } from "../controllers/publicacionController.js";
+import { publicacionController } from "../controllers/publicacioncontroller.js"
 
 const router = Router()
 
 router.get("/galeria", publicacionController.readGaleria);
+router.post("/publicaciones", publicacionController.agregarPublicacion);
 
 //Publicaciones
 // GET PUBLICACIONES PARA CATALOGO - LISTO
