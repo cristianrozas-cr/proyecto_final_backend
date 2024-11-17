@@ -1,21 +1,20 @@
 import { Router } from "express";
-import { publicacionController } from "../controllers/publicacioncontroller.js";
+import { publicacionController } from "../controllers/publicacionController.js";
 import { usuarioController } from "../controllers/usuariosController.js";
 import { imagenesController } from "../controllers/imagenesController.js";
 import { pedidosController } from "../controllers/pedidosController.js";
-import { agregarProducto, obtenerProductos, actualizarCantidad, eliminarProducto } from '../controllers/carritocontroller.js';
+import { carritoController } from "../controllers/carritoController.js";
 import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritocontroller.js";
-
 
 
 const router = Router()
 
 router.get("/galeria", publicacionController.readGaleria); // Desplegar Galeria
 router.post("/publicaciones", publicacionController.agregarPublicacion); // Agregar Publicacion
-router.post('/carrito', agregarProducto); // Agregar producto a carrito
-router.get('/carrito/:usuario_id', obtenerProductos); //Obtener carrito de ususario
-router.put('/carrito', actualizarCantidad); // Modificar cantidad de producto en Carrito
-router.delete('/carrito', eliminarProducto); // Eliminar producto de Carrito
+router.post('/carrito', carritoController.agregarProducto); // Agregar producto a carrito
+router.get('/carrito/:usuario_id', carritoController.obtenerProductos); //Obtener carrito de ususario
+router.put('/carrito', carritoController.actualizarCantidad); // Modificar cantidad de producto en Carrito
+router.delete('/carrito', carritoController.eliminarProducto); // Eliminar producto de Carrito
 router.post("/login", usuarioController.loginUsuario); // Inicio de sesión + TOKEN
 router.post("/registro", usuarioController.crearUsuario) // Registro de usuario + TOKEN
 router.get("/usuario", usuarioController.tokenUsuario) // Verificacion de TOKEN
