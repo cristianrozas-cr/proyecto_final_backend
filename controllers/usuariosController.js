@@ -14,9 +14,13 @@ const crearUsuario = async (req, res) => {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
     try {
-        const existingUser = await consultasUsuarios.comprobarUsuario({ email, telefono })
-        if (existingUser.rowCount > 0) {
-            return res.status(400).json({ error: 'El email o teléfono ya están en uso' });
+        const existingEmail = await consultasUsuarios.comprobarUsuario({ columna: "email", valor: `'${email}'` })
+        if (existingEmail.rowCount > 0) {
+            return res.status(400).json({ error: 'El email ya está en uso' });
+        }
+        const existingPhone = await consultasUsuarios.comprobarUsuario({ columna: "telefono", valor: `'${telefono}'` })
+        if (existingPhone.rowCount > 0) {
+            return res.status(400).json({ error: 'El telefono ya está en uso' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -150,8 +154,26 @@ const updateUsuario = async (req, res) => {
         console.error(err);
         res.status(500).json({ error: 'Ocurrió un error en el servidor' });
     }
-
-
 }
 
-export const usuarioController = { crearUsuario, loginUsuario, tokenUsuario, updateUsuario }
+const borrarUsuario = async (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+
+    const existingUser = await consultasUsuarios.comprobarUsuario({ columna: "id", valor: id })
+
+    if (existingUser.rowCount === 0) {
+
+        return res.status(400).json({ error: 'Los datos ingresados no son validos' });
+    }
+    try {
+        const user = await consultasUsuarios.deleteUsuario(id)
+        return res.status(200).json({ message: 'Usuario id:' + `${id}` + ' eliminado exitosamente' });
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Ocurrió un error en el servidor' });
+    }
+}
+
+export const usuarioController = { crearUsuario, loginUsuario, tokenUsuario, updateUsuario, borrarUsuario }

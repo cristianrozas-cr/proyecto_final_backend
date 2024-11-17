@@ -4,13 +4,14 @@ import format from 'pg-format';
 
 
 
-const comprobarUsuario = async ({ email }) => {
+const comprobarUsuario = async ({ columna, valor }) => {
+    console.log(columna)
     const query = `
             SELECT * FROM usuarios 
-            WHERE email = '%s';
+            WHERE %s = %s;
         `;
-    const formattedQuery = format(query, email)
-
+    const formattedQuery = format(query, columna, valor)
+    console.log(formattedQuery)
     const results = await pool.query(formattedQuery);
 
     return results
@@ -37,13 +38,7 @@ const infoUsuario = async (decoded) => {
     return results
 };
 
-const obtenerPerfil = async (id) => {
-    const query = "SELECT * FROM usuarios WHERE id = $1";
-    const { rows } = await pool.query(query, [id]);
-    return rows[0];
-};
-
-const actualizarPerfil = async ({id, nombre, apellido, telefono, img_perfil}) => {
+const actualizarPerfil = async ({ id, nombre, apellido, telefono, img_perfil }) => {
     const query = `
         UPDATE usuarios SET nombre = $1, apellido = $2, telefono = $3, img_perfil = $4
         WHERE id = $5 RETURNING *`;
@@ -51,5 +46,13 @@ const actualizarPerfil = async ({id, nombre, apellido, telefono, img_perfil}) =>
     const { rows } = await pool.query(query, values);
     return rows[0];
 };
+const deleteUsuario = async (id) => {
+    const query = `
+    DELETE FROM usuarios WHERE id = $1`
+    const values = [id]
+    const results = await pool.query(query, values);
+    console.log(results.rows[0])
+    return results
+}
 
-export const consultasUsuarios = { comprobarUsuario, registrarUsuario, infoUsuario, obtenerPerfil, actualizarPerfil }
+export const consultasUsuarios = { comprobarUsuario, registrarUsuario, infoUsuario, deleteUsuario, actualizarPerfil }

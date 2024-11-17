@@ -16,7 +16,21 @@ router.post("/login", usuarioController.loginUsuario); // Inicio de sesión + TO
 router.post("/registro", usuarioController.crearUsuario) // Registro de usuario + TOKEN
 router.get("/usuario", usuarioController.tokenUsuario) // Verificacion de TOKEN
 router.put("/update_perfil", usuarioController.updateUsuario) //Actualizacion info de Usuario
+router.delete("/usuario/:id", usuarioController.borrarUsuario) //Borrar Usuario
 
+
+router.get("*", (req, res) => {
+    res.status(404).send("Esta ruta no existe");
+});
+router.post("*", (req, res) => {
+    res.status(404).send("Esta ruta no existe");
+});
+router.put("*", (req, res) => {
+    res.status(404).send("Esta ruta no existe");
+});
+router.delete("*", (req, res) => {
+    res.status(404).send("Esta ruta no existe");
+});
 //Publicaciones
 // GET PUBLICACIONES PARA CATALOGO --- LISTO-> Modificado con JOIN para incluir IMG PORTADA
 // POST PUBLICACION --- Lista
@@ -27,6 +41,7 @@ router.put("/update_perfil", usuarioController.updateUsuario) //Actualizacion in
 //Registro de usuarios
 // POST REGISTRO USUARIO ---LISTO
 // PUT USUARIO ACTUALIZAR ---LISTO
+// DELETE USUARIO
 
 //Inicio de sesión de usuarios
 // POST LOGIN recibir TOKEN ---LISTO
