@@ -70,11 +70,13 @@ CREATE TABLE posts (
 -- Imágenes de Publicación
 CREATE TABLE imagenes (
     id SERIAL PRIMARY KEY,
+    id_vendedor INTEGER,
     publicacion_id INTEGER UNIQUE,
     img1_portada TEXT NOT NULL,
     img2 TEXT,
     img3 TEXT,
     img4 TEXT,
+    FOREIGN KEY (id_vendedor) REFERENCES usuarios (id) ON DELETE CASCADE,
     FOREIGN KEY (publicacion_id) REFERENCES publicaciones (id) ON DELETE CASCADE
 );
 

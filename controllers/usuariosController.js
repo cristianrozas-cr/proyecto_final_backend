@@ -34,14 +34,7 @@ const crearUsuario = async (req, res) => {
         });
 
         console.log(newUser)
-
-        const token = jwt.sign(
-            {
-                id: newUser.id,
-                email: newUser.email,
-            },
-            JWT_SECRET,
-            { expiresIn: '2h' } // Token válido por 2 horas
+        const token = jwt.sign({ id: newUser.id, email: newUser.email, }, JWT_SECRET, { expiresIn: '2h' } // Token válido por 2 horas
         );
         console.log(token)
         // Responder con el token y datos del usuario
@@ -111,13 +104,8 @@ const loginUsuario = async (req, res) => {
 };
 
 const tokenUsuario = async (req, res) => {
-    const Authorization = req.header("Authorization");
-    console.log(Authorization)
-
+    const decoded = req.user //Obtiene TOKEN almacenado en middleware
     try {
-        const token = Authorization.split("Bearer ")[1];
-        console.log(token)
-        const decoded = jwt.verify(token, JWT_SECRET);
 
         const result = await consultasUsuarios.infoUsuario(decoded);
         res.json(result.rows);
@@ -128,14 +116,15 @@ const tokenUsuario = async (req, res) => {
 };
 
 const updateUsuario = async (req, res) => {
-    const { id, nombre, apellido, telefono, img_perfil } = req.body
+    const id = req.user.id //Obtiene id de TOKEN almacenado en middleware
+    const { nombre, apellido, telefono, img_perfil } = req.body
 
     if (!id || !nombre || !apellido || !telefono) {
         return res.status(400).json({ error: 'Faltan datos en campos obligatorios' });
     }
 
     try {
-        const user = await consultasUsuarios.actualizarPerfil(req.body)
+        const user = await consultasUsuarios.actualizarPerfil({ id, nombre, apellido, telefono, img_perfil })
         console.log(user)
         res.status(200).json({
             message: 'Actualización de perfil existoso',
@@ -162,13 +151,20 @@ const borrarUsuario = async (req, res) => {
 
     const existingUser = await consultasUsuarios.comprobarUsuario({ columna: "id", valor: id })
 
-    if (existingUser.rowCount === 0) {
+    if (req.params.id != req.user.id) { // Comprueba que el usuario este validado para eliminar su cuenta
+        return res.status(400).json({ error: 'Token incorrecto para usuario indicado' });
+    }
 
+    if (existingUser.rowCount === 0) { // Comprueba que el usuario exista en la base de datos
         return res.status(400).json({ error: 'Los datos ingresados no son validos' });
     }
+
     try {
-        const user = await consultasUsuarios.deleteUsuario(id)
-        return res.status(200).json({ message: 'Usuario id:' + `${id}` + ' eliminado exitosamente' });
+        const usuarioEliminado = await consultasUsuarios.deleteUsuario(id)
+        return res.status(200).json({
+            message: 'Usuario id:' + `${id}` + ' eliminado exitosamente',
+            publicacion: usuarioEliminado,
+        });
     }
     catch (err) {
         console.error(err);
