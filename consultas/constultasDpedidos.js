@@ -17,43 +17,34 @@ export const agregarDireccion = async ({ usuario_id, pais, ciudad, calle, numero
   };
                                               
 
-const obtenerDirecciones = async ({usuario_id}) => {
-  try {
-    // Validación de parámetros
-    if (!usuario_id) {
-      throw new Error("Falta el ID del usuario");
+  const obtenerDirecciones = async (usuario_id) => {
+    try {
+      if (!usuario_id) {
+        throw new Error("Falta el ID del usuario");
+      }
+      const query = `
+        SELECT 
+          d.id AS direccion_id, 
+          d.pais, 
+          d.ciudad, 
+          d.calle, 
+          d.numero
+        FROM direcciones d  -- Tabla correcta: direcciones
+        WHERE d.usuario_id = $1`;
+      const { rows } = await pool.query(query, [usuario_id]);
+      return rows;
+    } catch (error) {
+      console.error("Error al obtener direcciones:", error.message);
+      throw new Error("No se pudieron obtener las direcciones");
     }
-
-    // Consulta para obtener las direcciones del usuario
-    const query = `
-      SELECT 
-        d.id AS direccion_id, 
-        d.pais, 
-        d.ciudad, 
-        d.calle, 
-        d.numero
-      FROM direccion d
-      WHERE d.usuario_id = $1`;
-    ;
-
-    // Ejecutar consulta y devolver resultados
-    const { rows } = await pool.query(query, [usuario_id]);
-    return rows; // Retorna todas las direcciones asociadas al usuario
-  } catch (error) {
-    console.error("Error al obtener direcciones:", error.message);
-    throw new Error("No se pudieron obtener las direcciones");
-  }
-};
-
+  };
+  
 
 const eliminarDireccion = async (usuario_id, direccion_id) => {
     try {
-      // Asegurarse de que se proporcionen ambos parámetros
       if (!usuario_id || !direccion_id) {
         throw new Error("Faltan el usuario_id o el direccion_id");
       }
-  
-      // Consulta para eliminar una dirección específica del usuario
       const query = `
         DELETE FROM direcciones 
         WHERE id = $1 AND usuario_id = $2
@@ -65,8 +56,7 @@ const eliminarDireccion = async (usuario_id, direccion_id) => {
       if (rows.length === 0) {
         throw new Error("No se encontró la dirección o no pertenece al usuario");
       }
-  
-      return rows[0]; // Retornar la dirección eliminada
+      return rows[0];
     } catch (error) {
       console.error("Error al eliminar la dirección:", error.message);
       throw new Error("No se pudo eliminar la dirección");
