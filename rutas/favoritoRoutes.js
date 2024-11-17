@@ -1,5 +1,4 @@
 import express from 'express';
-import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from '../controllers/favoritosController.js';
 
 const router = express.Router();
 

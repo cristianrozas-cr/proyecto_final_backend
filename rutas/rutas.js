@@ -2,16 +2,28 @@ import { Router } from "express";
 import { publicacionController } from "../controllers/publicacioncontroller.js";
 import { agregarProducto, obtenerProductos, actualizarCantidad, eliminarProducto } from '../controllers/carritocontroller.js';
 import {crearUsuario} from '../controllers/usuariosController.js';
+import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritocontroller.js";
 const router = Router()
 
 // Desplegar Galeria
 router.get("/galeria", publicacionController.readGaleria);
 router.post("/publicaciones", publicacionController.agregarPublicacion);
+//rutas carrito
 router.post('/carrito', agregarProducto);
 router.get('/carrito/:usuario_id', obtenerProductos);
 router.put('/carrito', actualizarCantidad);
 router.delete('/carrito', eliminarProducto);
+
 router.post("/usuario", crearUsuario);
+
+
+//rutas favoritos
+router.post('/favoritos', agregarFavorito);
+router.get('/favoritos/:usuario_id', obtenerFavoritos);
+router.delete('/favoritos/:usuario_id', eliminarFavorito);
+
+
+
 //Publicaciones
 // GET PUBLICACIONES PARA CATALOGO - LISTO-> Modificado con JOIN para incluir IMG PORTADA
 // POST PUBLICACION - Lista
@@ -33,15 +45,6 @@ router.post("/usuario", crearUsuario);
 // GET IMAGENES  USAR JOIN
 // DELETE IMAGENES
 
-//Favoritos
-// POST FAVORITOS
-// DELETE FAVORITOS: ID
-
-//Carrito
-// POST CARRITO
-// GET CARRITO 
-// PUT CARRITO 
-// DELETE CARRITO
 
 //Pedidos
 // POST PEDIDO
