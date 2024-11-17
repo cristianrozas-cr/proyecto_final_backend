@@ -1,15 +1,15 @@
 import express from "express";
 import cors from "cors";
 import router from "./rutas/rutas.js";
-import jsonwebtoken from "jsonwebtoken";
+import { middlewares } from "./middlewares.js";
 // import { reportMiddleware, requestLogger } from "./middlewares/middleWares.js";
 
 const app = express();
 const port = 3000;
 
+
 app.use(cors());
 app.use(express.json());
-
 app.use("/tecno", router);
 
 // app.use(requestLogger);

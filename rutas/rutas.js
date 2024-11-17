@@ -4,9 +4,11 @@ import { usuarioController } from "../controllers/usuariosController.js";
 import { imagenesController } from "../controllers/imagenesController.js";
 import { pedidosController } from "../controllers/pedidosController.js";
 import { carritoController } from "../controllers/carritoController.js";
-import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritocontroller.js";
+import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritoController.js";
 import { comentariosController } from "../controllers/comentariosController.js";
+import { middlewares } from "../middlewares.js";
 
+const validarToken = middlewares.validarToken
 
 const router = Router()
 
@@ -18,19 +20,19 @@ router.put('/carrito', carritoController.actualizarCantidad); // Modificar canti
 router.delete('/carrito', carritoController.eliminarProducto); // Eliminar producto de Carrito
 router.post("/login", usuarioController.loginUsuario); // Inicio de sesión + TOKEN
 router.post("/registro", usuarioController.crearUsuario) // Registro de usuario + TOKEN
-router.get("/usuario", usuarioController.tokenUsuario) // Verificacion de TOKEN
-router.put("/update_perfil", usuarioController.updateUsuario) // Actualizacion info de Usuario
-router.delete("/usuario/:id", usuarioController.borrarUsuario) // Borrar Usuario
-router.post("/publicaciones/imagenes", imagenesController.agregarImagenes) // Agregar imagenes a Publicacion
-router.put("/publicaciones/imagenes/:id", imagenesController.actualizarImagenes) // Actualizar imagenes de Publicacion
-router.put("/publicaciones/borrar_imagenes/:id", imagenesController.borrarImagenes) // Actualizar imagenes con NULL
+router.get("/usuario/perfil", validarToken, usuarioController.tokenUsuario) // Perfil de usuario validando TOKEN
+router.put("/usuario/update_perfil", validarToken, usuarioController.updateUsuario) // Actualizacion info de Usuario
+router.delete("/usuario/borrar/:id", validarToken, usuarioController.borrarUsuario) // Borrar Usuario
+router.post("/publicaciones/imagenes", validarToken, imagenesController.agregarImagenes) // Agregar imagenes a Publicacion
+router.put("/publicaciones/imagenes/:id", validarToken, imagenesController.actualizarImagenes) // Actualizar imagenes de Publicacion
+router.put("/publicaciones/borrar_imagenes/:id", validarToken, imagenesController.borrarImagenes) // Actualizar imagenes con NULL
 router.post("/pedidos", pedidosController.agregarPedido) // Agregar producto a tabla de pedidos
 router.post('/favoritos', agregarFavorito);
 router.get('/favoritos/:usuario_id', obtenerFavoritos);
 router.delete('/favoritos/:usuario_id', eliminarFavorito);
-router.post("/comentario/:publicacion_id", comentariosController.agregarComentario) // Agregar comentario en una publicacion
+router.post("/comentario/:publicacion_id", validarToken, comentariosController.agregarComentario) // Agregar comentario en una publicacion
 router.get("/comentario/:publicacion_id", comentariosController.obtenerComentarios) // Cargar comentarios de una publicacion
-router.delete("/comentario/:publicacion_id", comentariosController.borrarComentario) // Eliminar comentario de ususario
+router.delete("/comentario/:publicacion_id", validarToken, comentariosController.borrarComentario) // Eliminar comentario de ususario
 
 //RUTAS INEXISTENTES
 router.get("*", (req, res) => {

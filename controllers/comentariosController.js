@@ -11,13 +11,8 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const agregarComentario = async (req, res) => {
     try {
         const publicacion_id = req.params.publicacion_id;
-        const Authorization = req.header("Authorization");
-        const token = Authorization.split("Bearer ")[1];
-        const decoded = jwt.verify(token, JWT_SECRET)
-
-        const usuario_id = decoded.id
+        const usuario_id = req.user.id
         const { texto } = req.body;
-        console.log({ publicacion_id, usuario_id, texto })
         const nuevoPost = await consultasComentarios.addPost({ publicacion_id, usuario_id, texto });
         res.status(201).json({
             message: "Comentario agregado con éxito",
@@ -37,7 +32,6 @@ const obtenerComentarios = async (req, res) => {
     try {
         const publicacion_id = req.params.publicacion_id;
         const obtenerPost = await consultasComentarios.readPost({ publicacion_id });
-        console.log(obtenerPost)
         res.status(201).json({
             message: "Comentarios cargados con éxito",
             publicacion: obtenerPost,
@@ -58,10 +52,7 @@ const borrarComentario = async (req, res) => {
     try {
         const { post_id } = req.body
         const publicacion_id = req.params.publicacion_id;
-        const Authorization = req.header("Authorization");
-        const token = Authorization.split("Bearer ")[1];
-        const decoded = jwt.verify(token, JWT_SECRET)
-        const usuario_id = decoded.id
+        const usuario_id = req.user.id
 
         const existingPost = await consultasComentarios.comprobarPost({ post_id, publicacion_id, usuario_id })
 

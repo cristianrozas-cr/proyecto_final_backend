@@ -45,11 +45,10 @@ const actualizarPerfil = async ({ id, nombre, apellido, telefono, img_perfil }) 
 };
 const deleteUsuario = async (id) => {
     const query = `
-    DELETE FROM usuarios WHERE id = $1`
+    DELETE FROM usuarios WHERE id = $1 RETURNING * `
     const values = [id]
-    const results = await pool.query(query, values);
-    console.log(results.rows[0])
-    return results
+    const { rows } = await pool.query(query, values);
+    return rows[0]
 }
 
 export const consultasUsuarios = { comprobarUsuario, registrarUsuario, infoUsuario, deleteUsuario, actualizarPerfil }
