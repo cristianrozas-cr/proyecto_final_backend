@@ -1,9 +1,6 @@
 import { pool } from '../db/db.js';
 import format from 'pg-format';
 
-
-
-
 const comprobarUsuario = async ({ columna, valor }) => {
     console.log(columna)
     const query = `
