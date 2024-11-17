@@ -5,8 +5,8 @@ import { imagenesController } from "../controllers/imagenesController.js";
 import { pedidosController } from "../controllers/pedidosController.js";
 import { carritoController } from "../controllers/carritoController.js";
 import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritocontroller.js";
+import { agregarDireccion, obtenerDireccion, eliminarDireccion } from "../controllers/direccionController.js";
 import { comentariosController } from "../controllers/comentariosController.js";
-
 const router = Router()
 
 //Publicaciones
@@ -43,6 +43,10 @@ router.put("/pedidos/:id/estado", pedidosController.actualizarEstadoPedido); //A
 router.post('/favoritos', agregarFavorito);
 router.get('/favoritos/:usuario_id', obtenerFavoritos);
 router.delete('/favoritos/:usuario_id', eliminarFavorito);
+//direcciones
+router.post('/direccion', agregarDireccion);
+router.get('/direccion/:usuario_id', obtenerDireccion);
+router.delete('/direccion/:id', eliminarDireccion);
 
 //Comentarios
 router.post("/comentario/:publicacion_id", comentariosController.agregarComentario) // Agregar comentario en una publicacion
