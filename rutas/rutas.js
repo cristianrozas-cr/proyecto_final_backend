@@ -4,6 +4,9 @@ import { usuarioController } from "../controllers/usuariosController.js";
 import { imagenesController } from "../controllers/imagenesController.js";
 import { pedidosController } from "../controllers/pedidosController.js";
 import { agregarProducto, obtenerProductos, actualizarCantidad, eliminarProducto } from '../controllers/carritocontroller.js';
+import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritocontroller.js";
+
+
 
 const router = Router()
 
@@ -22,7 +25,9 @@ router.post("/publicaciones/imagenes", imagenesController.agregarImagenes) // Ag
 router.put("/publicaciones/imagenes/:id", imagenesController.actualizarImagenes) // Actualizar imagenes de Publicacion
 router.put("/publicaciones/borrar_imagenes/:id", imagenesController.borrarImagenes) // Actualizar imagenes con NULL
 router.post("/pedidos", pedidosController.agregarPedido) // Agregar producto a tabla de pedidos
-
+router.post('/favoritos', agregarFavorito);
+router.get('/favoritos/:usuario_id', obtenerFavoritos);
+router.delete('/favoritos/:usuario_id', eliminarFavorito);
 //RUTAS INEXISTENTES
 router.get("*", (req, res) => {
     res.status(404).send("Esta ruta no existe");
@@ -36,6 +41,7 @@ router.put("*", (req, res) => {
 router.delete("*", (req, res) => {
     res.status(404).send("Esta ruta no existe");
 });
+
 //Publicaciones
 // GET PUBLICACIONES PARA CATALOGO --- LISTO-> Modificado con JOIN para incluir IMG PORTADA
 // POST PUBLICACION --- Lista
@@ -58,15 +64,6 @@ router.delete("*", (req, res) => {
 // GET IMAGENES  USAR JOIN ---listo
 // DELETE IMAGENES  ---listo
 
-//Favoritos
-// POST FAVORITOS
-// DELETE FAVORITOS: ID
-
-//Carrito
-// POST CARRITO
-// GET CARRITO 
-// PUT CARRITO 
-// DELETE CARRITO
 
 //Pedidos
 // POST PEDIDO
