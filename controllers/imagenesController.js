@@ -1,32 +1,6 @@
 import { consultasImagenes } from "../consultas/consultasImagenes.js";
 
-
-
-// GET para mostrar galeria con publicaciones
-const readGaleria = async (req, res) => {
-    const { limit = 8, order = "ASC", page = 1 } = req.query;
-
-    // Utilizar una expresión regular para verificar si 'page' es un número válido
-    const isPageValid = /^[1-9]\d*$/.test(page);
-
-    // Validar el resultado de la expresión regular
-    if (!isPageValid) {
-        return res.status(400).json({ message: "Invalid page number, number > 0" });
-    }
-
-    try {
-        const publicaciones = await consultasPublicaciones.obtenerGaleria({ limit, order, page });
-        return res.json(publicaciones);
-    } catch (error) {
-        console.log(error);
-        if (error.code) {
-            const { code, message } = getDatabaseError(error.code);
-            return res.status(code).json({ message });
-        }
-        return res.status(500).json({ message: "Internal server error" });
-    }
-};
-
+// Agregar imagenes
 const agregarImagenes = async (req, res) => {
     try {
 
@@ -43,6 +17,7 @@ const agregarImagenes = async (req, res) => {
     }
 };
 
+// Actualizar imagenes
 const actualizarImagenes = async (req, res) => {
     try {
         const publicacion_id = req.params.id;
@@ -64,6 +39,7 @@ const actualizarImagenes = async (req, res) => {
 
 }
 
+// Asignar valor NULL a imagenes
 const borrarImagenes = async (req, res) => {
     try {
         const publicacion_id = req.params.id;
@@ -71,12 +47,12 @@ const borrarImagenes = async (req, res) => {
         console.log(publicacion_id, img)
         const imagenEliminada = await consultasImagenes.deleteImagenes({ publicacion_id, img })
         res.status(201).json({
-            message: "Imágenes actualizadas correctamente",
+            message: "Imágenes eliminadas correctamente",
             publicacion: imagenEliminada,
         });
     } catch (error) {
         res.status(400).json({
-            message: "No se pudieron actualizar las imágenes",
+            message: "No se pudieron eliminar las imágenes",
             error: error.message,
         });
     }

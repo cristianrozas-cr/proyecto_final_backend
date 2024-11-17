@@ -5,6 +5,7 @@ import { imagenesController } from "../controllers/imagenesController.js";
 import { pedidosController } from "../controllers/pedidosController.js";
 import { carritoController } from "../controllers/carritoController.js";
 import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritocontroller.js";
+import { comentariosController } from "../controllers/comentariosController.js";
 
 
 const router = Router()
@@ -12,7 +13,7 @@ const router = Router()
 router.get("/galeria", publicacionController.readGaleria); // Desplegar Galeria
 router.post("/publicaciones", publicacionController.agregarPublicacion); // Agregar Publicacion
 router.post('/carrito', carritoController.agregarProducto); // Agregar producto a carrito
-router.get('/carrito/:usuario_id', carritoController.obtenerProductos); //Obtener carrito de ususario
+router.get('/carrito/:usuario_id', carritoController.obtenerProductos); //Obtener carrito de usuario
 router.put('/carrito', carritoController.actualizarCantidad); // Modificar cantidad de producto en Carrito
 router.delete('/carrito', carritoController.eliminarProducto); // Eliminar producto de Carrito
 router.post("/login", usuarioController.loginUsuario); // Inicio de sesión + TOKEN
@@ -27,6 +28,10 @@ router.post("/pedidos", pedidosController.agregarPedido) // Agregar producto a t
 router.post('/favoritos', agregarFavorito);
 router.get('/favoritos/:usuario_id', obtenerFavoritos);
 router.delete('/favoritos/:usuario_id', eliminarFavorito);
+router.post("/comentario/:publicacion_id", comentariosController.agregarComentario) // Agregar comentario en una publicacion
+router.get("/comentario/:publicacion_id", comentariosController.obtenerComentarios) // Cargar comentarios de una publicacion
+router.delete("/comentario/:publicacion_id", comentariosController.borrarComentario) // Eliminar comentario de ususario
+
 //RUTAS INEXISTENTES
 router.get("*", (req, res) => {
     res.status(404).send("Esta ruta no existe");
@@ -76,9 +81,9 @@ router.delete("*", (req, res) => {
 // DELETE DIRECCIONES
 
 //Comentarios para publicaciones
-// POST POST
-// GET POST
-// DELETE POST
+// POST POST --- LISTO
+// GET POST  --- LISTO
+// DELETE POST --- LISTO
 
 export default router
 
