@@ -2,10 +2,10 @@ import { Router } from "express";
 import { publicacionController } from "../controllers/publicacioncontroller.js";
 import { usuarioController } from "../controllers/usuariosController.js";
 import { imagenesController } from "../controllers/imagenesController.js";
+import { pedidosController } from "../controllers/pedidosController.js";
 import { agregarProducto, obtenerProductos, actualizarCantidad, eliminarProducto } from '../controllers/carritocontroller.js';
 
 const router = Router()
-
 
 router.get("/galeria", publicacionController.readGaleria); // Desplegar Galeria
 router.post("/publicaciones", publicacionController.agregarPublicacion); // Agregar Publicacion
@@ -21,7 +21,9 @@ router.delete("/usuario/:id", usuarioController.borrarUsuario) // Borrar Usuario
 router.post("/publicaciones/imagenes", imagenesController.agregarImagenes) // Agregar imagenes a Publicacion
 router.put("/publicaciones/imagenes/:id", imagenesController.actualizarImagenes) // Actualizar imagenes de Publicacion
 router.put("/publicaciones/borrar_imagenes/:id", imagenesController.borrarImagenes) // Actualizar imagenes con NULL
+router.post("/pedidos", pedidosController.agregarPedido) // Agregar producto a tabla de pedidos
 
+//RUTAS INEXISTENTES
 router.get("*", (req, res) => {
     res.status(404).send("Esta ruta no existe");
 });
@@ -68,6 +70,7 @@ router.delete("*", (req, res) => {
 
 //Pedidos
 // POST PEDIDO
+
 // GET PEDIDO
 // PUT PEDIDO(PDTE O ENVIADO)
 
