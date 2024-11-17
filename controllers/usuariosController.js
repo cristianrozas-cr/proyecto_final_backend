@@ -1,13 +1,13 @@
 import { consultasUsuarios } from "../consultas/consultasUsuarios.js";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import bcrypt from 'bcryptjs/dist/bcrypt.js';
 
 dotenv.config();  // Cargar las variables de entorno desde el archivo .env
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export const crearUsuario = async (req, res) => {
-    console.log(req.body);
     const { email, password, nombre, apellido, telefono, img_perfil } = req.body;
 
     // Validación básica
@@ -23,7 +23,7 @@ export const crearUsuario = async (req, res) => {
             return res.status(400).json({ error: 'El email o teléfono ya están en uso' });
         }
 
-
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await consultasUsuarios.registrarUsuario({
             email,
@@ -34,9 +34,7 @@ export const crearUsuario = async (req, res) => {
             img_perfil,
         });
 
-        if (!newUser) {
-            return res.status(500).json({ error: 'No se pudo registrar al usuario' });
-        }
+        console.log(newUser)
 
         const token = jwt.sign(
             {
@@ -51,10 +49,10 @@ export const crearUsuario = async (req, res) => {
         res.status(201).json({
             message: 'Usuario registrado con éxito',
             user: {
-                id: newUser.id,
-                email: newUser.email,
-                nombre: newUser.nombre,
-                apellido: newUser.apellido,
+                "id": newUser.id,
+                "email": newUser.email,
+                "nombre": newUser.nombre,
+                "apellido": newUser.apellido,
             },
             token,
         });
@@ -63,3 +61,5 @@ export const crearUsuario = async (req, res) => {
         res.status(500).json({ error: 'Ocurrió un error al registrar el usuario' });
     }
 };
+
+export const usuarioController = { crearUsuario }

@@ -1,6 +1,6 @@
 import { pool } from '../db/db.js';
 import format from 'pg-format';
-import bcrypt from 'bcryptjs/dist/bcrypt.js';
+
 
 
 
@@ -12,17 +12,18 @@ const verificarUsuario = async ({ email, telefono }) => {
     const formattedQuery = format(query, email, telefono)
 
     const results = await pool.query(formattedQuery);
-    console.log(results)
+
     return results
 }
 
 const registrarUsuario = async ({ email, password, nombre, apellido, telefono, img_perfil }) => {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const query = `
-        INSERT INTO usuarios values (%s, %s, %s, %s, %s, %s)`;
-    const values = [email, hashedPassword, nombre, apellido, telefono, img_perfil];
-    const formattedQuery = format(query, values)
 
+    const query = `
+        INSERT INTO usuarios values (default, %L, %L, %L, %L, %L, %L)
+        RETURNING id, email, nombre, apellido, telefono, img_perfil;`;
+    const values = [email, password, nombre, apellido, telefono, img_perfil || null];
+    const formattedQuery = format(query, ...values)
+    console.log(formattedQuery)
     const results = await pool.query(formattedQuery);
     const newUser = results.rows[0]
     return newUser;
