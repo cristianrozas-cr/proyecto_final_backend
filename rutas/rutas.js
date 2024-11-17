@@ -3,6 +3,7 @@ import { publicacionController } from "../controllers/publicacioncontroller.js";
 import { agregarProducto, obtenerProductos, actualizarCantidad, eliminarProducto } from '../controllers/carritocontroller.js';
 import {crearUsuario} from '../controllers/usuariosController.js';
 import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritocontroller.js";
+import { agregarDireccion, obtenerDireccion, eliminarDireccion } from "../controllers/direccionController.js";
 const router = Router()
 
 // Desplegar Galeria
@@ -22,6 +23,11 @@ router.post('/favoritos', agregarFavorito);
 router.get('/favoritos/:usuario_id', obtenerFavoritos);
 router.delete('/favoritos/:usuario_id', eliminarFavorito);
 
+
+//direcciones
+router.post('/direccion', agregarDireccion);
+router.get('/direccion/:usuario_id', obtenerDireccion);
+router.delete('/direccion/:id', eliminarDireccion);
 
 
 //Publicaciones
