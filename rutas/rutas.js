@@ -36,6 +36,8 @@ router.put("/publicaciones/borrar_imagenes/:id", imagenesController.borrarImagen
 
 //Pedidos
 router.post("/pedidos", pedidosController.agregarPedido) // Agregar producto a tabla de pedidos
+router.get("/pedidos/:comprador_id", pedidosController.obtenerPedidos) //Obtener todos los pedidos de un usuario
+router.put("/pedidos/:id/estado", pedidosController.actualizarEstadoPedido); //Actualizar estado del pedido
 
 //Favoritos
 router.post('/favoritos', agregarFavorito);
@@ -60,16 +62,6 @@ router.put("*", (req, res) => {
 router.delete("*", (req, res) => {
     res.status(404).send("Esta ruta no existe");
 });
-
-//Pedidos
-// POST PEDIDO
-// GET PEDIDO
-// PUT PEDIDO(PDTE O ENVIADO)
-
-//Direcciones de pedidos
-// POST DIRECCIONES
-// GET DIRECCIONES
-// DELETE DIRECCIONES
 
 export default router
 
