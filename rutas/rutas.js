@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { publicacionController } from "../controllers/publicacioncontroller.js";
 import { usuarioController } from "../controllers/usuariosController.js";
+import { imagenesController } from "../controllers/imagenesController.js";
 import { agregarProducto, obtenerProductos, actualizarCantidad, eliminarProducto } from '../controllers/carritocontroller.js';
 
 const router = Router()
@@ -15,9 +16,11 @@ router.delete('/carrito', eliminarProducto); // Eliminar producto de Carrito
 router.post("/login", usuarioController.loginUsuario); // Inicio de sesión + TOKEN
 router.post("/registro", usuarioController.crearUsuario) // Registro de usuario + TOKEN
 router.get("/usuario", usuarioController.tokenUsuario) // Verificacion de TOKEN
-router.put("/update_perfil", usuarioController.updateUsuario) //Actualizacion info de Usuario
-router.delete("/usuario/:id", usuarioController.borrarUsuario) //Borrar Usuario
-
+router.put("/update_perfil", usuarioController.updateUsuario) // Actualizacion info de Usuario
+router.delete("/usuario/:id", usuarioController.borrarUsuario) // Borrar Usuario
+router.post("/publicaciones/imagenes", imagenesController.agregarImagenes) // Agregar imagenes a Publicacion
+router.put("/publicaciones/imagenes/:id", imagenesController.actualizarImagenes) // Actualizar imagenes de Publicacion
+router.put("/publicaciones/borrar_imagenes/:id", imagenesController.borrarImagenes) // Actualizar imagenes con NULL
 
 router.get("*", (req, res) => {
     res.status(404).send("Esta ruta no existe");
@@ -41,17 +44,17 @@ router.delete("*", (req, res) => {
 //Registro de usuarios
 // POST REGISTRO USUARIO ---LISTO
 // PUT USUARIO ACTUALIZAR ---LISTO
-// DELETE USUARIO
+// DELETE USUARIO ---LISTO
 
 //Inicio de sesión de usuarios
 // POST LOGIN recibir TOKEN ---LISTO
 // GET LOGIN USUARIO validar token ---LISTO
 
 //Imágenes
-// POST IMAGENES ????
-// PUT IMAGENES
-// GET IMAGENES  USAR JOIN
-// DELETE IMAGENES
+// POST IMAGENES ---LISTO
+// PUT IMAGENES ---LISTO
+// GET IMAGENES  USAR JOIN ---listo
+// DELETE IMAGENES  ---listo
 
 //Favoritos
 // POST FAVORITOS

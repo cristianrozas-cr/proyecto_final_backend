@@ -1,7 +1,5 @@
 import { pool } from '../db/db.js';
 import format from 'pg-format';
-import bcrypt from 'bcryptjs/dist/bcrypt.js'
-import jsonwebtoken from 'jsonwebtoken';
 
 const BASE_URL = `http://localhost:3000`;
 
