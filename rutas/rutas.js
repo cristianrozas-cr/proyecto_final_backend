@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { publicacionController } from "../controllers/publicacioncontroller.js";
+import { publicacionController } from "../controllers/publicacionController.js";
 import { usuarioController } from "../controllers/usuariosController.js";
 import { imagenesController } from "../controllers/imagenesController.js";
 import { pedidosController } from "../controllers/pedidosController.js";
-import { carritoController } from "../controllers/carritocontroller.js";
+import { carritoController } from "../controllers/carritoController.js";
 
 const router = Router()
 

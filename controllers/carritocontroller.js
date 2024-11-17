@@ -1,4 +1,4 @@
-import { consultasCarrito } from '../consultas/consultacarrito.js';
+import { consultasCarrito } from '../consultas/consultasCarrito.js';
 
 const agregarProducto = async (req, res) => {
   try {
