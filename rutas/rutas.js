@@ -4,7 +4,8 @@ import { usuarioController } from "../controllers/usuariosController.js";
 import { imagenesController } from "../controllers/imagenesController.js";
 import { pedidosController } from "../controllers/pedidosController.js";
 import { carritoController } from "../controllers/carritoController.js";
-import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritoController.js";
+import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritocontroller.js";
+import { agregarDireccion, obtenerDireccion, eliminarDireccion } from "../controllers/direccionController.js";
 import { comentariosController } from "../controllers/comentariosController.js";
 import { middlewares } from "../middlewares.js";
 
