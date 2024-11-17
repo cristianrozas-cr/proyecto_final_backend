@@ -1,7 +1,5 @@
 import { pool } from '../db/db.js';
 import format from 'pg-format';
-import bcrypt from 'bcryptjs/dist/bcrypt.js'
-import jsonwebtoken from 'jsonwebtoken';
 
 const BASE_URL = `http://localhost:3000`;
 
@@ -85,13 +83,73 @@ const agregarPublicacionDB = async ({ titulo, descripcion, categoria_id, precio,
 };
 
 //Mostrar detalle de una publicacion
-const detallePublicacion = async (id) => {
+const detallePublicacionDB = async (id) => {
+  try {
+    const consulta = `
+      SELECT 
+        p.id AS publicacion_id, 
+        p.titulo, 
+        p.descripcion, 
+        p.precio, 
+        p.fecha_publicacion, 
+        p.categoria_id, 
+        p.id_vendedor, 
+        i.img1_portada, 
+        i.img2, 
+        i.img3, 
+        i.img4
+      FROM publicaciones p
+      LEFT JOIN imagenes i ON p.id = i.publicacion_id
+      WHERE p.id = $1;
+    `;
+    const values = [id];
+    const { rows } = await pool.query(consulta, values);
+    return rows[0]; // Retorna la publicación con sus imágenes
+  } catch (error) {
+    throw new Error("Error al consultar la base de datos");
+  }
+};
 
-  const consulta = "SELECT * from publicaciones WHERE id = $1"
-  const values = [id]
-  const { rows } = await pool.query(consulta, values)
-  return rows;
+//Mostrar publicaciones de un usuario en específico
+const publicacionesUsuarioDB = async (id) => {
+  try{
+  const consulta = `
+        SELECT 
+          p.id AS publicacion_id, 
+          p.titulo, 
+          p.descripcion, 
+          p.precio, 
+          p.fecha_publicacion, 
+          p.categoria_id, 
+          p.id_vendedor, 
+          i.img1_portada 
+        FROM publicaciones p
+        LEFT JOIN imagenes i ON p.id = i.publicacion_id
+        WHERE p.id_vendedor = $1;
+      `;
+      const values = [id];
+      const { rows } = await pool.query(consulta, values);
+      return rows;
+  } catch (error) {
+    throw new Error("Error al consultar la base de datos");
+  }
+}
+
+//Eliminar una publicación
+const eliminarPublicacionDB = async (id) =>{
+
+  try{
+    const consulta = `DELETE from publicaciones WHERE id = $1 RETURNING *;`;
+    const values = [id];
+    const { rows } = await pool.query(consulta, values);
+
+    if (rows.length === 0) {
+      throw new Error("Error al eliminar la publicación");
+    }
+  } catch (error) {
+    throw new Error("Error al eliminar la publicación")
+  }
 }
 
 
-export const consultasPublicaciones = { obtenerGaleria, agregarPublicacionDB }
+export const consultasPublicaciones = { obtenerGaleria, agregarPublicacionDB, detallePublicacionDB, publicacionesUsuarioDB, eliminarPublicacionDB }
