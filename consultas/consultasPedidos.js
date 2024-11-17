@@ -18,15 +18,30 @@ const agregarPedidoDB = async ({publicacion_id, comprador_id, direccion_id, cant
 // GET PEDIDOS
 const obtenerPedidosDB = async (comprador_id) => {
     
-    const consulta = `SELECT * FROM pedidos WHERE comprador_id = $1 RETURNING *;`;
-    const values = [comprador_id]
-    const { rows } = await pool.query(consulta, values)
-    return rows;
+    try {
+        const consulta = `SELECT * FROM pedidos WHERE comprador_id = $1;`;
+        const values = [comprador_id];
+        const { rows } = await pool.query(consulta, values);
+        console.log(rows);
+        return rows; // Devuelve un arreglo de registros
+      } catch (error) {
+        throw new Error("Error al obtener los pedidos de la base de datos");
+      }
 }
 
+const actualizarEstadoPedidoDB = async (id, estado) => {
+    try {
+      const consulta = `UPDATE pedidos SET estado = $1 WHERE id = $2;`;
+      const values = [estado, id];
+      const result = await pool.query(consulta, values);
+      return result.rowCount;
+    } catch (error) {
+      throw new Error("Error al actualizar el estado del pedido");
+    }
+  };
 
 
 
 
-export const consultasPedidos = { agregarPedidoDB, obtenerPedidosDB}
-// PUT PEDIDO(PDTE O ENVIADO)
+
+export const consultasPedidos = { agregarPedidoDB, obtenerPedidosDB, actualizarEstadoPedidoDB};
