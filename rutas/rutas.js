@@ -5,7 +5,7 @@ import { imagenesController } from "../controllers/imagenesController.js";
 import { pedidosController } from "../controllers/pedidosController.js";
 import { carritoController } from "../controllers/carritoController.js";
 import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritocontroller.js";
-
+import { comentariosController } from "../controllers/comentariosController.js";
 
 const router = Router()
 
@@ -16,10 +16,9 @@ router.get("/publicaciones/:id", publicacionController.detallePublicacion); //Ob
 router.get("/usuarios/perfil/:id", publicacionController.publicacionesUsuarios); //Obtener todas las publicaciones de un usuario
 router.delete("/publicaciones/:id", publicacionController.eliminarPublicacion); //Eliminar una publicacion
 
-
 //Carrito
 router.post('/carrito', carritoController.agregarProducto); // Agregar producto a carrito
-router.get('/carrito/:usuario_id', carritoController.obtenerProductos); //Obtener carrito de ususario
+router.get('/carrito/:usuario_id', carritoController.obtenerProductos); //Obtener carrito de usuario
 router.put('/carrito', carritoController.actualizarCantidad); // Modificar cantidad de producto en Carrito
 router.delete('/carrito', carritoController.eliminarProducto); // Eliminar producto de Carrito
 
@@ -43,6 +42,10 @@ router.post('/favoritos', agregarFavorito);
 router.get('/favoritos/:usuario_id', obtenerFavoritos);
 router.delete('/favoritos/:usuario_id', eliminarFavorito);
 
+//Comentarios
+router.post("/comentario/:publicacion_id", comentariosController.agregarComentario) // Agregar comentario en una publicacion
+router.get("/comentario/:publicacion_id", comentariosController.obtenerComentarios) // Cargar comentarios de una publicacion
+router.delete("/comentario/:publicacion_id", comentariosController.borrarComentario) // Eliminar comentario de ususario
 
 //RUTAS INEXISTENTES
 router.get("*", (req, res) => {
@@ -58,32 +61,8 @@ router.delete("*", (req, res) => {
     res.status(404).send("Esta ruta no existe");
 });
 
-//Publicaciones
-// GET PUBLICACIONES PARA CATALOGO --- LISTO-> Modificado con JOIN para incluir IMG PORTADA
-// POST PUBLICACION --- Lista
-// GET PUBLICACIONES: ID
-// GET PUBLICACIONES DE USUARIO
-// DELETE PUBLICACION ID
-
-//Registro de usuarios
-// POST REGISTRO USUARIO ---LISTO
-// PUT USUARIO ACTUALIZAR ---LISTO
-// DELETE USUARIO ---LISTO
-
-//Inicio de sesión de usuarios
-// POST LOGIN recibir TOKEN ---LISTO
-// GET LOGIN USUARIO validar token ---LISTO
-
-//Imágenes
-// POST IMAGENES ---LISTO
-// PUT IMAGENES ---LISTO
-// GET IMAGENES  USAR JOIN ---listo
-// DELETE IMAGENES  ---listo
-
-
 //Pedidos
 // POST PEDIDO
-
 // GET PEDIDO
 // PUT PEDIDO(PDTE O ENVIADO)
 
@@ -92,15 +71,5 @@ router.delete("*", (req, res) => {
 // GET DIRECCIONES
 // DELETE DIRECCIONES
 
-//Comentarios para publicaciones
-// POST POST
-// GET POST
-// DELETE POST
-
 export default router
-
-
-
-
-
 

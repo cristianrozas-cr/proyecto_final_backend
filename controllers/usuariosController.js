@@ -71,7 +71,7 @@ const loginUsuario = async (req, res) => {
 
     try {
 
-        const existingUser = await consultasUsuarios.comprobarUsuario({ email })
+        const existingUser = await consultasUsuarios.comprobarUsuario({ columna: "email", valor: `'${email}'` })
 
         if (existingUser.rowCount === 0) {
 
