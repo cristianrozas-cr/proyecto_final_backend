@@ -1,5 +1,6 @@
-const request = require("supertest");
-const server = require("../index");
+import supertest from "supertest";
+import request from 'supertest'; // Importa 'supertest' usando ES Modules
+import server from '../index';   // Importa el servidor
 
 describe("Operaciones CRUD de cafes", () => {
   it("Ruta GET devuelve un status 200", async () => {
