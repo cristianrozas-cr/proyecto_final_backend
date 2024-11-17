@@ -2,32 +2,35 @@ import { Router } from "express";
 import { publicacionController } from "../controllers/publicacioncontroller.js";
 import { usuarioController } from "../controllers/usuariosController.js";
 import { agregarProducto, obtenerProductos, actualizarCantidad, eliminarProducto } from '../controllers/carritocontroller.js';
-import { crearUsuario } from '../controllers/usuariosController.js';
+
 const router = Router()
 
-// Desplegar Galeria
-router.get("/galeria", publicacionController.readGaleria);
-router.post("/publicaciones", publicacionController.agregarPublicacion);
-router.post('/carrito', agregarProducto);
-router.get('/carrito/:usuario_id', obtenerProductos);
-router.put('/carrito', actualizarCantidad);
-router.delete('/carrito', eliminarProducto);
-router.post("/usuario", crearUsuario);
-router.post("/registro", usuarioController.crearUsuario)
+
+router.get("/galeria", publicacionController.readGaleria); // Desplegar Galeria
+router.post("/publicaciones", publicacionController.agregarPublicacion); // Agregar Publicacion
+router.post('/carrito', agregarProducto); // Agregar producto a carrito
+router.get('/carrito/:usuario_id', obtenerProductos); //Obtener carrito de ususario
+router.put('/carrito', actualizarCantidad); // Modificar cantidad de producto en Carrito
+router.delete('/carrito', eliminarProducto); // Eliminar producto de Carrito
+router.post("/login", usuarioController.loginUsuario); // Inicio de sesión + TOKEN
+router.post("/registro", usuarioController.crearUsuario) // Registro de usuario + TOKEN
+router.get("/usuario", usuarioController.tokenUsuario) // Verificacion de TOKEN
+router.put("/update_perfil", usuarioController.updateUsuario) //Actualizacion info de Usuario
+
 //Publicaciones
-// GET PUBLICACIONES PARA CATALOGO - LISTO-> Modificado con JOIN para incluir IMG PORTADA
-// POST PUBLICACION - Lista
+// GET PUBLICACIONES PARA CATALOGO --- LISTO-> Modificado con JOIN para incluir IMG PORTADA
+// POST PUBLICACION --- Lista
 // GET PUBLICACIONES: ID
 // GET PUBLICACIONES DE USUARIO
 // DELETE PUBLICACION ID
 
 //Registro de usuarios
-// POST REGISTRO USUARIO
-// PUT USUARIO ACTUALIZAR
+// POST REGISTRO USUARIO ---LISTO
+// PUT USUARIO ACTUALIZAR ---LISTO
 
 //Inicio de sesión de usuarios
-// POST LOGIN recibir TOKEN 
-// GET LOGIN USUARIO validar token
+// POST LOGIN recibir TOKEN ---LISTO
+// GET LOGIN USUARIO validar token ---LISTO
 
 //Imágenes
 // POST IMAGENES ????

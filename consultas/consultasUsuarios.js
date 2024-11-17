@@ -4,12 +4,12 @@ import format from 'pg-format';
 
 
 
-const verificarUsuario = async ({ email, telefono }) => {
+const comprobarUsuario = async ({ email }) => {
     const query = `
             SELECT * FROM usuarios 
-            WHERE email = '%s' OR telefono = '%s';
+            WHERE email = '%s';
         `;
-    const formattedQuery = format(query, email, telefono)
+    const formattedQuery = format(query, email)
 
     const results = await pool.query(formattedQuery);
 
@@ -29,14 +29,12 @@ const registrarUsuario = async ({ email, password, nombre, apellido, telefono, i
     return newUser;
 };
 
-const loginUsuario = async (email, password) => {
-    const query = "SELECT * FROM usuarios WHERE email = $1"
-    const { rows, rowsCount } = await pool.query(query, [email]);
-    if (!rowsCount) throw { code: 404, message: "usuario no encontrado" };
-    const usuario = rows[0];
-    const passwordMatch = await bcrypt.compare(password, usuario.password);
-    const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    return { token };
+const infoUsuario = async (decoded) => {
+    const values = [decoded.email]
+    console.log(values)
+    const consulta = 'SELECT * FROM usuarios WHERE email = $1'
+    const results = await pool.query(consulta, values)
+    return results
 };
 
 const obtenerPerfil = async (id) => {
@@ -45,13 +43,13 @@ const obtenerPerfil = async (id) => {
     return rows[0];
 };
 
-const actualizarPerfil = async (id, { nombre, apellido, telefono, img_perfil }) => {
+const actualizarPerfil = async ({id, nombre, apellido, telefono, img_perfil}) => {
     const query = `
-        UPDATE usuarios SET nombre = $1, apelido = $2, telefono = $3, img_perfil = $4
+        UPDATE usuarios SET nombre = $1, apellido = $2, telefono = $3, img_perfil = $4
         WHERE id = $5 RETURNING *`;
     const values = [nombre, apellido, telefono, img_perfil, id];
     const { rows } = await pool.query(query, values);
     return rows[0];
 };
 
-export const consultasUsuarios = { verificarUsuario, registrarUsuario, loginUsuario, obtenerPerfil, actualizarPerfil }
+export const consultasUsuarios = { comprobarUsuario, registrarUsuario, infoUsuario, obtenerPerfil, actualizarPerfil }
