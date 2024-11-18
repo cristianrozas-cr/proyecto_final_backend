@@ -31,12 +31,15 @@ El sistema está compuesto por un backend robusto que proporciona las funcionali
 
 Para ejecutar este proyecto, deberás añadir las siguientes variables de entorno a tu archivo .env:
 
+
+```bash
 DB_HOST=localhost
 DB_USER=tu_usuario
 DB_PASSWORD=tu_contraseña
 DB_NAME=softjobs
 DB_PORT=5432
 JWT_SECRET=tu clave secreta
+```
 
 ## Testing
 
