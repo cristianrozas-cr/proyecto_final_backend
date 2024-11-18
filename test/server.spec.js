@@ -4,6 +4,7 @@ import router from '../rutas/rutas';
 
 const app = express();
 
+app.use(express.json());
 app.use("/tecno", router);
 
 describe('Test API Endpoints', () => {
@@ -93,4 +94,42 @@ describe('Test API Endpoints', () => {
       ])
     )
   })
+
+  it("Test POST /tecno/direccion al agregar una nueva dirección devuelve un 201", async () => {
+    const nuevaDireccion = {
+      usuario_id: 1,
+      pais: "Argentina",
+      ciudad: "Buenos Aires",
+      calle: "Santa Fe",
+      numero: "1234",
+    };
+
+    console.log("Datos enviados en el test:", nuevaDireccion);
+
+    const response = await request(app)
+      .post("/tecno/direccion")
+      .send(nuevaDireccion)
+      .set("Content-Type", "application/json");
+
+    // Logs de depuración
+    console.log("Estado de respuesta:", response.statusCode);
+    console.log("Cuerpo de respuesta:", response.body);
+
+    expect(response.statusCode).toBe(201);
+
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: "Dirección agregada con éxito",
+        direccion: expect.objectContaining({
+          usuario_id: nuevaDireccion.usuario_id,
+          pais: nuevaDireccion.pais,
+          ciudad: nuevaDireccion.ciudad,
+          calle: nuevaDireccion.calle,
+          numero: nuevaDireccion.numero,
+          id: expect.any(Number), // ID generado
+        }),
+      })
+    );
+  });
+
 })
