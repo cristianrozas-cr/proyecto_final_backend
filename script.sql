@@ -99,3 +99,107 @@ CREATE TABLE carrito (
     FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE,
     FOREIGN KEY (publicacion_id) REFERENCES publicaciones (id) ON DELETE CASCADE
 );
+
+-- Poblacion de tablas para TEST
+-- Usuarios
+INSERT INTO
+    usuarios (
+        id,
+        email,
+        password,
+        nombre,
+        apellido,
+        telefono,
+        img_perfil
+    )
+VALUES
+    (
+        1,
+        'email@ejemplo.cl',
+        'clavesinencriptacion',
+        'Juan',
+        'Perez',
+        '+56912345678',
+        'https://example.com/perfil/juan-perez.png'
+    ),
+    (
+        2,
+        'otroemail@ejemplo.cl',
+        'clavesinencriptacion',
+        'Miguel',
+        'Fuentes',
+        '+56987654321',
+        'https://example.com/perfil/miguel-fuentes.png'
+    );
+
+-- Categorias
+INSERT INTO
+    categorias (id, nombre)
+VALUES
+    (1, 'Notebooks'),
+    (2, 'Celulares'),
+    (3, 'Consolas'),
+    (4, 'Wearables'),
+    (5, 'Tablets');
+
+--Publicaciones
+INSERT INTO
+    publicaciones (
+        id,
+        titulo,
+        descripcion,
+        categoria_id,
+        precio,
+        id_vendedor
+    )
+VALUES
+    (
+        1,
+        'Notebook Acer',
+        'Gama Alta Gamer',
+        1,
+        500000,
+        1
+    ),
+    (
+        2,
+        'Telefono Samsung',
+        'Pantalla curva',
+        2,
+        350000,
+        2
+    );
+
+-- Direcciones
+INSERT INTO
+    direcciones (id, ususario_id, pais, ciudad, calle, numero)
+VALUES
+    (
+        1,
+        1,
+        'chile',
+        'santiago',
+        'vicuña mackenna',
+        '1234'
+    ),
+    (
+        2,
+        2,
+        'chile',
+        'valparaiso',
+        'los carrera',
+        '4568'
+    );
+
+-- Comentarios
+INSERT INTO
+    posts (
+        id,
+        publicacion_id,
+        ususario_id,
+        fecha_post,
+        texto
+    )
+values
+    (1, 1, 2, default, 'me gusto mucho'),
+    (2, 2, 1, default, 'Es muy lento');
