@@ -13,3 +13,7 @@ DB_USER=tu_usuario
 DB_PASSWORD=tu_contraseña
 DB_NAME=softjobs
 DB_PORT=5432
+
+JWT_SECRET=tu clave secreta
+
+## Para probar los test, primero crea la base de datos, luego utiliza el comando 'npm run test'
