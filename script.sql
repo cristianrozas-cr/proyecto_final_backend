@@ -170,9 +170,40 @@ VALUES
         2
     );
 
+-- Imagenes
+INSERT INTO
+    imagenes (
+        id,
+        id_vendedor,
+        publicacion_id,
+        img1_portada,
+        img2,
+        img3,
+        img4
+    )
+VALUES
+    (
+        1,
+        1,
+        1,
+        'http://ejemploimg1.png',
+        'http://ejemploimg2.png',
+        'http://ejemploimg3.png',
+        'http://ejemploimg4.png'
+    ),
+    (
+        2,
+        2,
+        2,
+        'http://ejemploimg1.png',
+        'http://ejemploimg2.png',
+        'http://ejemploimg3.png',
+        'http://ejemploimg4.png'
+    );
+
 -- Direcciones
 INSERT INTO
-    direcciones (id, ususario_id, pais, ciudad, calle, numero)
+    direcciones (id, usuario_id, pais, ciudad, calle, numero)
 VALUES
     (
         1,
@@ -196,7 +227,7 @@ INSERT INTO
     posts (
         id,
         publicacion_id,
-        ususario_id,
+        usuario_id,
         fecha_post,
         texto
     )

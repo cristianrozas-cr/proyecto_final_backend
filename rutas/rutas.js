@@ -56,7 +56,7 @@ router.delete('/direccion/:id', eliminarDireccion);
 //Comentarios
 router.post("/comentario/:publicacion_id", validarToken, comentariosController.agregarComentario) // Agregar comentario en una publicacion
 router.get("/comentario/:publicacion_id", comentariosController.obtenerComentarios) // Cargar comentarios de una publicacion
-router.delete("/comentario/:publicacion_id", validarToken, comentariosController.borrarComentario) // Eliminar comentario de ususario
+router.delete("/comentario/:publicacion_id", validarToken, comentariosController.borrarComentario) // Eliminar comentario de usuario
 
 //RUTAS INEXISTENTES
 router.get("*", (req, res) => {
