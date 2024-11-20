@@ -4,8 +4,8 @@ import { usuarioController } from "../controllers/usuariosController.js";
 import { imagenesController } from "../controllers/imagenesController.js";
 import { pedidosController } from "../controllers/pedidosController.js";
 import { carritoController } from "../controllers/carritoController.js";
-import { agregarFavorito, obtenerFavoritos, eliminarFavorito } from "../controllers/favoritocontroller.js";
-import { agregarDireccion, obtenerDireccion, eliminarDireccion } from "../controllers/direccionController.js";
+import { favoritoController } from "../controllers/favoritoController.js";
+import { direccionController } from "../controllers/direccionController.js";
 import { comentariosController } from "../controllers/comentariosController.js";
 import { middlewares } from "../middlewares.js";
 
@@ -44,14 +44,14 @@ router.get("/pedidos/:comprador_id", pedidosController.obtenerPedidos) //Obtener
 router.put("/pedidos/:id/estado", pedidosController.actualizarEstadoPedido); //Actualizar estado del pedido
 
 //Favoritos
-router.post('/favoritos', agregarFavorito);
-router.get('/favoritos/:usuario_id', obtenerFavoritos);
-router.delete('/favoritos/:usuario_id', eliminarFavorito);
+router.post('/favoritos', favoritoController.agregarFavorito);
+router.get('/favoritos/:usuario_id', favoritoController.obtenerFavoritos);
+router.delete('/favoritos/:usuario_id', favoritoController.eliminarFavorito);
 
 //direcciones
-router.post('/direccion', agregarDireccion);
-router.get('/direccion/:usuario_id', obtenerDireccion);
-router.delete('/direccion/:id', eliminarDireccion);
+router.post('/direccion', direccionController.agregarDireccion);
+router.get('/direccion/:usuario_id', direccionController.obtenerDireccion);
+router.delete('/direccion/:id', direccionController.eliminarDireccion);
 
 //Comentarios
 router.post("/comentario/:publicacion_id", validarToken, comentariosController.agregarComentario) // Agregar comentario en una publicacion
