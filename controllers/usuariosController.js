@@ -8,7 +8,7 @@ dotenv.config();  // Cargar las variables de entorno desde el archivo .env
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const crearUsuario = async (req, res) => {
-    const { email, password, nombre, apellido, telefono, img_perfil } = req.body;
+    const { email, password, nombre, apellido, telefono } = req.body;
     // Validación básica
     if (!email || !password || !nombre || !apellido) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
@@ -30,7 +30,6 @@ const crearUsuario = async (req, res) => {
             nombre,
             apellido,
             telefono,
-            img_perfil,
         });
 
         console.log(newUser)
