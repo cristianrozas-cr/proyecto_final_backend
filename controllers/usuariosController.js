@@ -40,10 +40,12 @@ const crearUsuario = async (req, res) => {
         res.status(201).json({
             message: 'Usuario registrado con éxito',
             user: {
-                "id": newUser.id,
-                "email": newUser.email,
-                "nombre": newUser.nombre,
-                "apellido": newUser.apellido,
+                id: newUser.id,
+                email: newUser.email,
+                nombre: newUser.nombre,
+                apellido: newUser.apellido,
+                telefono: newUser.telefono,
+                img_perfil: newUser.img_perfil,
             },
             token,
         });
@@ -95,9 +97,12 @@ const loginUsuario = async (req, res) => {
             },
             token,
         });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Ocurrió un error en el servidor' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Ocurrió un error en el servidor',
+            error: error.message,
+        });
     }
 
 };
@@ -138,9 +143,11 @@ const updateUsuario = async (req, res) => {
         });
     }
 
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Ocurrió un error en el servidor' });
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: 'Ocurrió un error en el servidor',
+        });
     }
 }
 
@@ -149,7 +156,10 @@ const borrarUsuario = async (req, res) => {
     console.log(id)
 
     const existingUser = await consultasUsuarios.comprobarUsuario({ columna: "id", valor: id })
-
+    console.log({
+        idparams: req.params.id,
+        id_auth: req.user.id
+    })
     if (req.params.id != req.user.id) { // Comprueba que el usuario este validado para eliminar su cuenta
         return res.status(400).json({ error: 'Token incorrecto para usuario indicado' });
     }
