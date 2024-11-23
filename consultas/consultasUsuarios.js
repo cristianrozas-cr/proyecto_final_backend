@@ -14,12 +14,12 @@ const comprobarUsuario = async ({ columna, valor }) => {
     return results
 }
 
-const registrarUsuario = async ({ email, password, nombre, apellido, telefono, img_perfil }) => {
+const registrarUsuario = async ({ email, password, nombre, apellido, telefono }) => {
 
     const query = `
-        INSERT INTO usuarios values (default, %L, %L, %L, %L, %L, %L)
-        RETURNING id, email, nombre, apellido, telefono, img_perfil;`;
-    const values = [email, password, nombre, apellido, telefono, img_perfil || null];
+        INSERT INTO usuarios values (default, %L, %L, %L, %L, %L)
+        RETURNING id, email, nombre, apellido, telefono;`;
+    const values = [email, password, nombre, apellido, telefono || null];
     const formattedQuery = format(query, ...values)
     console.log(formattedQuery)
     const results = await pool.query(formattedQuery);
