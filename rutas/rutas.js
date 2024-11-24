@@ -7,6 +7,7 @@ import { carritoController } from "../controllers/carritoController.js";
 import { favoritoController } from "../controllers/favoritoController.js";
 import { direccionController } from "../controllers/direccionController.js";
 import { comentariosController } from "../controllers/comentariosController.js";
+import { categoriaController } from "../controllers/categoriaController.js";
 import { middlewares } from "../middlewares.js";
 
 const validarToken = middlewares.validarToken
@@ -57,6 +58,9 @@ router.delete('/direccion/:id', direccionController.eliminarDireccion);
 router.post("/comentario/:publicacion_id", validarToken, comentariosController.agregarComentario) // Agregar comentario en una publicacion
 router.get("/comentario/:publicacion_id", comentariosController.obtenerComentarios) // Cargar comentarios de una publicacion
 router.delete("/comentario/:publicacion_id", validarToken, comentariosController.borrarComentario) // Eliminar comentario de usuario
+
+//Categorias
+router.get("/categorias", categoriaController.getCategorias)
 
 //RUTAS INEXISTENTES
 router.get("*", (req, res) => {
