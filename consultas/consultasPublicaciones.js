@@ -17,7 +17,8 @@ const obtenerGaleria = async ({ limit = 8, page = 1 }) => {
     SELECT 
         p.id AS publicacion_id,
         p.titulo, 
-        p.descripcion, 
+        p.descripcion,
+        p.categoria_id, 
         p.precio, 
         p.fecha_publicacion,
         p.id_vendedor, 
