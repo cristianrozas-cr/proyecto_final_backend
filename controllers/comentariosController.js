@@ -57,7 +57,7 @@ const borrarComentario = async (req, res) => {
         const existingPost = await consultasComentarios.comprobarPost({ post_id, publicacion_id, usuario_id })
 
         if (existingPost.rowCount === 0) {
-            return res.status(400).json({ error: 'El comentario que se desea eliminar no existe o pertenece a otro ususario' });
+            return res.status(400).json({ error: 'El comentario que se desea eliminar no existe o pertenece a otro usuario' });
         }
 
         const borrarPost = await consultasComentarios.deletePost({ post_id, publicacion_id, usuario_id });
