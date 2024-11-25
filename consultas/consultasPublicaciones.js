@@ -61,7 +61,7 @@ const obtenerGaleria = async ({ limit = 8, page = 1 }) => {
 
 //Agregar una nueva Publicación
 const agregarPublicacionDB = async ({ titulo, descripcion, categoria_id, precio, id_vendedor }) => {
-  try {
+  try { 
     // Validación de los campos
     if (!titulo || !descripcion || !precio || !id_vendedor) {
       throw new Error("Completa todos los campos");
@@ -69,8 +69,8 @@ const agregarPublicacionDB = async ({ titulo, descripcion, categoria_id, precio,
 
     // Consulta SQL
     const consulta = `
-      INSERT INTO publicaciones (titulo, descripcion, categoria_id, precio, id_vendedor)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO publicaciones (id, titulo, descripcion, categoria_id, precio, id_vendedor)
+      VALUES (default, $1, $2, $3, $4, $5)
       RETURNING *;
     `;
     const { rows } = await pool.query(consulta, [titulo, descripcion, categoria_id, precio, id_vendedor]);
@@ -79,7 +79,7 @@ const agregarPublicacionDB = async ({ titulo, descripcion, categoria_id, precio,
     return rows[0];
   } catch (error) {
     console.error("Error al agregar publicación:", error.message);
-    throw new Error("No se pudo agregar la publicación.");
+    throw new Error(error.message);
   }
 };
 
