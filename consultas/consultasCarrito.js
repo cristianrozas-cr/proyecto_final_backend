@@ -1,23 +1,29 @@
 import { pool } from '../db/db.js';
 
 // Agregar un producto al carrito
+// Agregar un producto al carrito
 const agregarAlCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
   try {
-    if (!usuario_id || !publicacion_id || !cantidad) {
-      throw new Error("Todos los campos son obligatorios");
-    }
+      if (!usuario_id || !publicacion_id || !cantidad) {
+          throw new Error("Todos los campos son obligatorios");
+      }
 
-    const query = `
-      INSERT INTO carrito values (default, $1, $2, $3) 
-    `;
-    const values = [usuario_id, publicacion_id, cantidad];
-    const { rows } = await pool.query(query, values);
-    return rows[0];
+      const query = `
+          INSERT INTO carrito (usuario_id, publicacion_id, cantidad)
+          VALUES ($1, $2, $3)
+          ON CONFLICT (usuario_id, publicacion_id)
+          DO UPDATE SET cantidad = carrito.cantidad + $3
+          RETURNING *;
+      `; // Maneja duplicados aumentando la cantidad
+      const values = [usuario_id, publicacion_id, cantidad];
+      const { rows } = await pool.query(query, values);
+      return rows[0];
   } catch (error) {
-    console.error("Error al agregar al carrito:", error.message);
-    throw new Error("No se pudo agregar el producto al carrito.");
+      console.error("Error al agregar al carrito:", error.message);
+      throw new Error("No se pudo agregar el producto al carrito.");
   }
 };
+
 
 // Obtener los productos del carrito de un usuario
 const obtenerCarrito = async (usuario_id) => {
