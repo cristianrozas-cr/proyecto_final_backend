@@ -46,7 +46,7 @@ router.put("/pedidos/:id/estado", pedidosController.actualizarEstadoPedido); //A
 //Favoritos
 router.post('/favoritos', agregarFavorito);
 router.get('/favoritos/:usuario_id', obtenerFavoritos);
-router.delete('/favoritos/:usuario_id', eliminarFavorito);
+router.delete('/favoritos/:favorito_id', eliminarFavorito);
 
 //direcciones
 router.post('/direccion', agregarDireccion);

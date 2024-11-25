@@ -1,21 +1,21 @@
 import { pool } from '../db/db.js';
 
 // Agregar un producto al carrito
-const agregarAlCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
+const agregarFavorito = async ({ usuario_id, publicacion_id }) => {
   try {
-    if (!usuario_id || !publicacion_id || !cantidad) {
+    if (!usuario_id || !publicacion_id) {
       throw new Error("Todos los campos son obligatorios");
     }
-
     const query = `
-      INSERT INTO carrito values (default, $1, $2, $3) 
+      INSERT INTO favoritos (usuario_id, publicacion_id) 
+      VALUES ($1, $2) RETURNING *;
     `;
-    const values = [usuario_id, publicacion_id, cantidad];
+    const values = [usuario_id, publicacion_id];
     const { rows } = await pool.query(query, values);
-    return rows[0];
+    return rows[0]; // Si necesitas devolver los detalles del favorito agregado
   } catch (error) {
-    console.error("Error al agregar al carrito:", error.message);
-    throw new Error("No se pudo agregar el producto al carrito.");
+    console.error("Error al agregar favorito:", error.message);
+    throw new Error("No se pudo agregar a favoritos");
   }
 };
 
