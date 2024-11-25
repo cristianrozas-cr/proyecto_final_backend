@@ -45,9 +45,11 @@ router.get("/pedidos/:comprador_id", pedidosController.obtenerPedidos) //Obtener
 router.put("/pedidos/:id/estado", pedidosController.actualizarEstadoPedido); //Actualizar estado del pedido
 
 //Favoritos
-router.post('/favoritos', favoritoController.agregarFavorito);
-router.get('/favoritos/:usuario_id', favoritoController.obtenerFavoritos);
-router.delete('/favoritos/:usuario_id', favoritoController.eliminarFavorito);
+
+router.post('/favoritos', agregarFavorito);
+router.get('/favoritos/:usuario_id', obtenerFavoritos);
+router.delete('/favoritos/:favorito_id', eliminarFavorito);
+
 
 //direcciones
 router.post('/direccion', direccionController.agregarDireccion);

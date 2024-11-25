@@ -1,6 +1,7 @@
 import request from 'supertest'; // Importa supertest
 import express from 'express';   // Importa la aplicación Express
 import router from '../rutas/rutas';
+import { string } from 'pg-format';
 
 const app = express();
 
@@ -133,3 +134,4 @@ describe('Test API Endpoints', () => {
   });
 
 })
+

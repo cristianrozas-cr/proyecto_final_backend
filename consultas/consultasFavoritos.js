@@ -1,21 +1,23 @@
 import { pool } from '../db/db.js';
 
-const agregarFavorito = async ({ usuario_id, publicacion_id}) =>{
+const agregarFavorito = async ({ usuario_id, publicacion_id }) => {
   try {
-    if (!usuario_id || !publicacion_id){
-      throw new Error(" todos los campos son obligatorios");
+    if (!usuario_id || !publicacion_id) {
+      throw new Error("Todos los campos son obligatorios");
     }
-    const query =`
-      INSERT INTO favoritos values (DEFAULT, $1, $2)     
+    const query = `
+      INSERT INTO favoritos (usuario_id, publicacion_id) 
+      VALUES ($1, $2) RETURNING *;
     `;
     const values = [usuario_id, publicacion_id];
     const { rows } = await pool.query(query, values);
-    return rows[0];
-  } catch( error ) {
-    console.error("error al agregar favoritos:", error.message);
-    throw new Error("no se pudo agregar a favoritos")
+    return rows[0]; // Si necesitas devolver los detalles del favorito agregado
+  } catch (error) {
+    console.error("Error al agregar favorito:", error.message);
+    throw new Error("No se pudo agregar a favoritos");
   }
 };
+
 
 const obtenerFavoritos = async(usuario_id) => {
   try {
