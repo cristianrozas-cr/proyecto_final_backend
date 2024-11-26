@@ -8,8 +8,10 @@ const agregarAlCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
     }
 
     const query = `
-      INSERT INTO carrito values (default, $1, $2, $3) 
-    `;
+          INSERT INTO carrito (usuario_id, publicacion_id, cantidad)
+          VALUES ($1, $2, $3)
+          RETURNING *;
+      `; // Maneja duplicados aumentando la cantidad
     const values = [usuario_id, publicacion_id, cantidad];
     const { rows } = await pool.query(query, values);
     return rows[0];
@@ -27,7 +29,7 @@ const obtenerCarrito = async (usuario_id) => {
     }
 
     const query = `
-      SELECT c.id AS carrito_id, c.cantidad, p.titulo, p.precio, p.descripcion, p.id AS publicacion_id
+      SELECT c.id, c.cantidad, c.usuario_id, p.titulo, p.precio, p.id AS publicacion_id
       FROM carrito c
       INNER JOIN publicaciones p ON c.publicacion_id = p.id
       WHERE c.usuario_id = $1;

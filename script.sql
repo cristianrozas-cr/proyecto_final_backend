@@ -98,6 +98,7 @@ CREATE TABLE carrito (
     cantidad INT NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE,
     FOREIGN KEY (publicacion_id) REFERENCES publicaciones (id) ON DELETE CASCADE
+    CONSTRAINT unique_usuario_publicacion UNIQUE (usuario_id, publicacion_id)
 );
 
 -- Poblacion de tablas para TEST
