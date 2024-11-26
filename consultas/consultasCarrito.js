@@ -4,26 +4,26 @@ import { pool } from '../db/db.js';
 // Agregar un producto al carrito
 const agregarAlCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
   try {
-      if (!usuario_id || !publicacion_id || !cantidad) {
-          throw new Error("Todos los campos son obligatorios");
-      }
+    if (!usuario_id || !publicacion_id || !cantidad) {
+      throw new Error("Todos los campos son obligatorios");
+    }
 
-      const query = `
-          INSERT INTO carrito (usuario_id, publicacion_id, cantidad)
-          VALUES ($1, $2, $3)
-          ON CONFLICT (usuario_id, publicacion_id)
-          DO UPDATE SET cantidad = carrito.cantidad + $3
-          RETURNING *;
-      `; // Maneja duplicados aumentando la cantidad
-      const values = [usuario_id, publicacion_id, cantidad];
-      const { rows } = await pool.query(query, values);
-      return rows[0];
+    const query = `
+      INSERT INTO carrito (usuario_id, publicacion_id, cantidad)
+      VALUES ($1, $2, $3)
+      ON CONFLICT (usuario_id, publicacion_id)
+      DO UPDATE SET cantidad = carrito.cantidad + EXCLUDED.cantidad
+      RETURNING *;
+    `;
+
+    const values = [usuario_id, publicacion_id, cantidad];
+    const { rows } = await pool.query(query, values);
+    return rows[0];
   } catch (error) {
-      console.error("Error al agregar al carrito:", error.message);
-      throw new Error("No se pudo agregar el producto al carrito.");
+    console.error("Error al agregar al carrito:", error.message);
+    throw new Error("No se pudo agregar el producto al carrito.");
   }
 };
-
 
 // Obtener los productos del carrito de un usuario
 const obtenerCarrito = async (usuario_id) => {
@@ -49,6 +49,8 @@ const obtenerCarrito = async (usuario_id) => {
 // Actualizar la cantidad de un producto en el carrito
 const actualizarCantidadCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
   try {
+    console.log("Datos recibidos para actualizar:", { usuario_id, publicacion_id, cantidad });
+    
     if (!usuario_id || !publicacion_id || !cantidad) {
       throw new Error("Todos los campos son obligatorios");
     }
@@ -61,12 +63,14 @@ const actualizarCantidadCarrito = async ({ usuario_id, publicacion_id, cantidad 
     `;
     const values = [cantidad, usuario_id, publicacion_id];
     const { rows } = await pool.query(query, values);
+    console.log("Resultado de la actualización:", rows);
     return rows[0];
   } catch (error) {
     console.error("Error al actualizar la cantidad en el carrito:", error.message);
     throw new Error("No se pudo actualizar la cantidad en el carrito.");
   }
 };
+
 
 // Eliminar un producto del carrito
 const eliminarDelCarrito = async ({ usuario_id, publicacion_id }) => {
