@@ -46,13 +46,13 @@ const obtenerCarrito = async (usuario_id) => {
   }
 };
 
-// Actualizar la cantidad de un producto en el carrito
+/// Actualizar la cantidad de un producto en el carrito
 const actualizarCantidadCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
   try {
     console.log("Datos recibidos para actualizar:", { usuario_id, publicacion_id, cantidad });
     
-    if (!usuario_id || !publicacion_id || !cantidad) {
-      throw new Error("Todos los campos son obligatorios");
+    if (!usuario_id || !publicacion_id || cantidad == null || cantidad < 1) {
+      throw new Error("Todos los campos son obligatorios y la cantidad debe ser mayor a cero.");
     }
 
     const query = `
@@ -62,16 +62,21 @@ const actualizarCantidadCarrito = async ({ usuario_id, publicacion_id, cantidad 
       RETURNING *;
     `;
     const values = [cantidad, usuario_id, publicacion_id];
+    
     const { rows } = await pool.query(query, values);
-    console.log("Resultado de la actualización:", rows);
+
+    if (rows.length === 0) {
+      throw new Error("El producto no se encontró en el carrito.");
+    }
+
+    console.log("Producto actualizado:", rows[0]);
     return rows[0];
+    
   } catch (error) {
-    console.error("Error al actualizar la cantidad en el carrito:", error.message);
-    throw new Error("No se pudo actualizar la cantidad en el carrito.");
+    console.error("Error al actualizar la cantidad en el carrito:", error);
+    throw new Error(`No se pudo actualizar la cantidad en el carrito: ${error.message}`);
   }
 };
-
-
 // Eliminar un producto del carrito
 const eliminarDelCarrito = async ({ usuario_id, publicacion_id }) => {
   try {
@@ -91,6 +96,7 @@ const eliminarDelCarrito = async ({ usuario_id, publicacion_id }) => {
       throw new Error("El producto no existe en el carrito.");
     }
 
+    console.log("Producto eliminado:", rows[0]);
     return { message: "Producto eliminado del carrito" };
   } catch (error) {
     console.error("Error al eliminar producto del carrito:", error.message);
