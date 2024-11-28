@@ -16,6 +16,7 @@ const router = Router()
 
 //Publicaciones
 router.get("/galeria", publicacionController.readGaleria); // Desplegar Galeria
+router.get("/galeria/:categoria_id", publicacionController.filtroGaleria); // Desplegar Galeria Filtrada por categoria
 router.post("/publicaciones", validarToken, publicacionController.agregarPublicacion); // Agregar Publicacion
 router.get("/publicaciones/:id", publicacionController.detallePublicacion); //Obtener detalle de una publicacion
 router.get("/usuarios/perfil/:id", publicacionController.publicacionesUsuarios); //Obtener todas las publicaciones de un usuario
