@@ -1,6 +1,7 @@
 import { pool } from '../db/db.js';
 
 // Agregar un producto al carrito
+// Agregar un producto al carrito
 const agregarAlCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
   try {
     if (!usuario_id || !publicacion_id || !cantidad) {
@@ -8,8 +9,13 @@ const agregarAlCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
     }
 
     const query = `
-      INSERT INTO carrito values (default, $1, $2, $3) 
+      INSERT INTO carrito (usuario_id, publicacion_id, cantidad)
+      VALUES ($1, $2, $3)
+      ON CONFLICT (usuario_id, publicacion_id)
+      DO UPDATE SET cantidad = carrito.cantidad + EXCLUDED.cantidad
+      RETURNING *;
     `;
+
     const values = [usuario_id, publicacion_id, cantidad];
     const { rows } = await pool.query(query, values);
     return rows[0];
@@ -27,9 +33,10 @@ const obtenerCarrito = async (usuario_id) => {
     }
 
     const query = `
-      SELECT c.id AS carrito_id, c.cantidad, p.titulo, p.precio, p.descripcion, p.id AS publicacion_id
+      SELECT c.id AS carrito_id, c.cantidad, p.titulo, p.precio, p.descripcion, p.id AS publicacion_id, i.img1_portada
       FROM carrito c
       INNER JOIN publicaciones p ON c.publicacion_id = p.id
+      LEFT JOIN imagenes i ON p.id = i.publicacion_id
       WHERE c.usuario_id = $1;
     `;
     const { rows } = await pool.query(query, [usuario_id]);
@@ -40,11 +47,11 @@ const obtenerCarrito = async (usuario_id) => {
   }
 };
 
-// Actualizar la cantidad de un producto en el carrito
+/// Actualizar la cantidad de un producto en el carrito
 const actualizarCantidadCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
   try {
-    if (!usuario_id || !publicacion_id || !cantidad) {
-      throw new Error("Todos los campos son obligatorios");
+    if (!usuario_id || !publicacion_id || cantidad == null || cantidad < 1) {
+      throw new Error("Todos los campos son obligatorios y la cantidad debe ser mayor o igual a 1.");
     }
 
     const query = `
@@ -54,10 +61,16 @@ const actualizarCantidadCarrito = async ({ usuario_id, publicacion_id, cantidad 
       RETURNING *;
     `;
     const values = [cantidad, usuario_id, publicacion_id];
+    
     const { rows } = await pool.query(query, values);
+
+    if (rows.length === 0) {
+      throw new Error("El producto no se encontró en el carrito.");
+    }
+
     return rows[0];
   } catch (error) {
-    console.error("Error al actualizar la cantidad en el carrito:", error.message);
+    console.error("Error al actualizar la cantidad en el carrito:", error);
     throw new Error("No se pudo actualizar la cantidad en el carrito.");
   }
 };
@@ -81,6 +94,7 @@ const eliminarDelCarrito = async ({ usuario_id, publicacion_id }) => {
       throw new Error("El producto no existe en el carrito.");
     }
 
+    console.log("Producto eliminado:", rows[0]);
     return { message: "Producto eliminado del carrito" };
   } catch (error) {
     console.error("Error al eliminar producto del carrito:", error.message);
