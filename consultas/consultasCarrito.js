@@ -33,9 +33,10 @@ const obtenerCarrito = async (usuario_id) => {
     }
 
     const query = `
-      SELECT c.id AS carrito_id, c.cantidad, p.titulo, p.precio, p.descripcion, p.id AS publicacion_id
+      SELECT c.id AS carrito_id, c.cantidad, p.titulo, p.precio, p.descripcion, p.id AS publicacion_id, i.img1_portada
       FROM carrito c
       INNER JOIN publicaciones p ON c.publicacion_id = p.id
+      LEFT JOIN imagenes i ON p.id = i.publicacion_id
       WHERE c.usuario_id = $1;
     `;
     const { rows } = await pool.query(query, [usuario_id]);
