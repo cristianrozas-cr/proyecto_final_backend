@@ -48,7 +48,7 @@ WHERE f.usuario_id = $1;
   }
 };
 
-const eliminarFavorito = async ({favorito_id}) => {
+const eliminarFavorito = async (favorito_id) => {
   try {
     const query = `
     DELETE FROM favoritos

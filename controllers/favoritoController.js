@@ -28,7 +28,7 @@ const obtenerFavoritos = async (req, res) => {
 
 const eliminarFavorito = async (req, res) => {
   try {
-    const eliminado = await consultasFavoritos.eliminarFavorito(req.body);
+    const eliminado = await consultasFavoritos.eliminarFavorito(req.body.id);
 
     if (!eliminado) {
       return res.status(404).json({ message: "La publicación no está en favoritos." });

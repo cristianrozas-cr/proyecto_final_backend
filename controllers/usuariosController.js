@@ -33,7 +33,7 @@ const crearUsuario = async (req, res) => {
         });
 
         console.log(newUser)
-        const token = jwt.sign({ id: newUser.id, email: newUser.email, }, JWT_SECRET, { expiresIn: '2h' } // Token válido por 2 horas
+        const token = jwt.sign({ id: newUser.id, email: newUser.email, }, JWT_SECRET, { expiresIn: '1h' } // Token válido por 2 horas
         );
         console.log(token)
         // Responder con el token y datos del usuario
@@ -81,7 +81,7 @@ const loginUsuario = async (req, res) => {
         }
 
         // Generar el token JWT
-        const token = jwt.sign({ id: user.id, email: user.email, }, JWT_SECRET, { expiresIn: '2h' } // Token válido por 2 horas
+        const token = jwt.sign({ id: user.id, email: user.email, }, JWT_SECRET, { expiresIn: '1h' } // Token válido por 2 horas
         );
 
         // Responder con el token y los datos del usuario
