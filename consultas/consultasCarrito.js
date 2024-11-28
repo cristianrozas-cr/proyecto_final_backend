@@ -49,10 +49,8 @@ const obtenerCarrito = async (usuario_id) => {
 /// Actualizar la cantidad de un producto en el carrito
 const actualizarCantidadCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
   try {
-    console.log("Datos recibidos para actualizar:", { usuario_id, publicacion_id, cantidad });
-    
     if (!usuario_id || !publicacion_id || cantidad == null || cantidad < 1) {
-      throw new Error("Todos los campos son obligatorios y la cantidad debe ser mayor a cero.");
+      throw new Error("Todos los campos son obligatorios y la cantidad debe ser mayor o igual a 1.");
     }
 
     const query = `
@@ -69,14 +67,13 @@ const actualizarCantidadCarrito = async ({ usuario_id, publicacion_id, cantidad 
       throw new Error("El producto no se encontró en el carrito.");
     }
 
-    console.log("Producto actualizado:", rows[0]);
     return rows[0];
-    
   } catch (error) {
     console.error("Error al actualizar la cantidad en el carrito:", error);
-    throw new Error(`No se pudo actualizar la cantidad en el carrito: ${error.message}`);
+    throw new Error("No se pudo actualizar la cantidad en el carrito.");
   }
 };
+
 // Eliminar un producto del carrito
 const eliminarDelCarrito = async ({ usuario_id, publicacion_id }) => {
   try {
