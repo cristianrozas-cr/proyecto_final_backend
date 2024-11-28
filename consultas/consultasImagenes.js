@@ -2,15 +2,15 @@ import { pool } from '../db/db.js';
 import format from 'pg-format';
 
 //Agregar imagenes a publicacion
-const addImagenes = async ({ id_vendedor, publicacion_id, img1_portada, img2, img3, img4 }) => {
-
+const addImagenes = async (id_vendedor, data) => {
+  console.log(data, id_vendedor)
   // Consulta SQL
   const query = `
       INSERT INTO imagenes (publicacion_id, id_vendedor, img1_portada, img2, img3, img4)
       values (%s, %s, '%s', '%s', '%s', '%s')
       RETURNING *;
     `;
-  const values = [publicacion_id, id_vendedor, img1_portada, img2, img3, img4]
+  const values = [data.publicacion_id, id_vendedor, data.img1_portada, data.img2, data.img3, data.img4]
   const formattedQuery = format(query, ...values)
   console.log(formattedQuery)
   const { rows } = await pool.query(formattedQuery);

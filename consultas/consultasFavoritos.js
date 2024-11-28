@@ -1,4 +1,4 @@
-import { pool } from '../db/db.js';
+import { pool } from "../db/db.js";
 
 const agregarFavorito = async ({ usuario_id, publicacion_id }) => {
   try {
@@ -18,17 +18,27 @@ const agregarFavorito = async ({ usuario_id, publicacion_id }) => {
   }
 };
 
-
-const obtenerFavoritos = async(usuario_id) => {
+const obtenerFavoritos = async (usuario_id) => {
   try {
     if (!usuario_id) {
       throw new Error("falta id del usuario");
     }
     const query = `
-      SELECT f.id AS favorito_id, f.publicacion_id, p.titulo, p.descripcion, p.precio, p.fecha_publicacion
-      FROM favoritos f
-      INNER JOIN publicaciones p ON f.publicacion_id = p.id
-      WHERE f.usuario_id = $1
+     SELECT 
+    f.id AS favorito_id, 
+    f.publicacion_id, 
+    p.titulo, 
+    p.descripcion, 
+    p.precio, 
+    p.fecha_publicacion, 
+    p.categoria_id,
+    i.img1_portada
+FROM favoritos f
+INNER JOIN publicaciones p 
+    ON f.publicacion_id = p.id
+LEFT JOIN imagenes i 
+    ON p.id = i.publicacion_id
+WHERE f.usuario_id = $1;
     `;
     const { rows } = await pool.query(query, [usuario_id]);
     return rows;
@@ -38,15 +48,16 @@ const obtenerFavoritos = async(usuario_id) => {
   }
 };
 
-const eliminarFavorito = async ({ usuario_id, publicacion_id}) => {
-  try{
+const eliminarFavorito = async (favorito_id) => {
+  try {
     const query = `
     DELETE FROM favoritos
-    WHERE usuario_id = $1 AND publicacion_id = $2
+    WHERE id = $1
     RETURNING *
     `;
-    const values = [usuario_id, publicacion_id];
-    const {rowCount} = await pool.query(query, values);
+    const values = [favorito_id];
+    console.log(favorito_id)
+    const { rowCount } = await pool.query(query, values);
     return rowCount > 0;
   } catch (error) {
     console.error("Error al eliminar de favoritos:", error.message);
@@ -54,11 +65,8 @@ const eliminarFavorito = async ({ usuario_id, publicacion_id}) => {
   }
 };
 
-
-
-
 export const consultasFavoritos = {
   agregarFavorito,
   obtenerFavoritos,
-  eliminarFavorito
-}
+  eliminarFavorito,
+};

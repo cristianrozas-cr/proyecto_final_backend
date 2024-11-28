@@ -16,16 +16,16 @@ const router = Router()
 
 //Publicaciones
 router.get("/galeria", publicacionController.readGaleria); // Desplegar Galeria
-router.post("/publicaciones", publicacionController.agregarPublicacion); // Agregar Publicacion
+router.post("/publicaciones", validarToken, publicacionController.agregarPublicacion); // Agregar Publicacion
 router.get("/publicaciones/:id", publicacionController.detallePublicacion); //Obtener detalle de una publicacion
 router.get("/usuarios/perfil/:id", publicacionController.publicacionesUsuarios); //Obtener todas las publicaciones de un usuario
-router.delete("/publicaciones/:id", publicacionController.eliminarPublicacion); //Eliminar una publicacion
+router.delete("/publicaciones/:id", validarToken, publicacionController.eliminarPublicacion); //Eliminar una publicacion
 
 //Carrito
-router.post('/carrito', carritoController.agregarProducto); // Agregar producto a carrito
+router.post('/carrito', validarToken, carritoController.agregarProducto); // Agregar producto a carrito
 router.get('/carrito/:usuario_id', carritoController.obtenerProductos); //Obtener carrito de usuario
-router.put('/carrito', carritoController.actualizarCantidad); // Modificar cantidad de producto en Carrito
-router.delete('/carrito', carritoController.eliminarProducto); // Eliminar producto de Carrito
+router.put('/carrito', validarToken, carritoController.actualizarCantidad); // Modificar cantidad de producto en Carrito
+router.delete('/carrito', validarToken, carritoController.eliminarProducto); // Eliminar producto de Carrito
 
 //Gestión de usuarios
 router.post("/login", usuarioController.loginUsuario); // Inicio de sesión + TOKEN
@@ -46,9 +46,9 @@ router.put("/pedidos/:id/estado", pedidosController.actualizarEstadoPedido); //A
 
 //Favoritos
 
-router.post('/favoritos', favoritoController.agregarFavorito);
+router.post('/favoritos', validarToken, favoritoController.agregarFavorito);
 router.get('/favoritos/:usuario_id', favoritoController.obtenerFavoritos);
-router.delete('/favoritos/:favorito_id', favoritoController.eliminarFavorito);
+router.delete('/favoritos/:favorito_id', validarToken, favoritoController.eliminarFavorito);
 
 
 //direcciones

@@ -9,13 +9,10 @@ const agregarAlCarrito = async ({ usuario_id, publicacion_id, cantidad }) => {
     }
 
     const query = `
-      INSERT INTO carrito (usuario_id, publicacion_id, cantidad)
-      VALUES ($1, $2, $3)
-      ON CONFLICT (usuario_id, publicacion_id)
-      DO UPDATE SET cantidad = carrito.cantidad + EXCLUDED.cantidad
-      RETURNING *;
-    `;
-
+          INSERT INTO carrito (usuario_id, publicacion_id, cantidad)
+          VALUES ($1, $2, $3)
+          RETURNING *;
+      `; // Maneja duplicados aumentando la cantidad
     const values = [usuario_id, publicacion_id, cantidad];
     const { rows } = await pool.query(query, values);
     return rows[0];
@@ -33,12 +30,19 @@ const obtenerCarrito = async (usuario_id) => {
     }
 
     const query = `
-      SELECT c.id AS carrito_id, c.cantidad, p.titulo, p.precio, p.descripcion, p.id AS publicacion_id, i.img1_portada
-      FROM carrito c
-      INNER JOIN publicaciones p ON c.publicacion_id = p.id
-      LEFT JOIN imagenes i ON p.id = i.publicacion_id
-      WHERE c.usuario_id = $1;
-    `;
+     SELECT 
+  c.id, 
+  c.cantidad, 
+  c.usuario_id, 
+  p.titulo, 
+  p.precio, 
+  p.id AS publicacion_id, 
+  i.img1_portada
+FROM carrito c
+INNER JOIN publicaciones p ON c.publicacion_id = p.id
+LEFT JOIN imagenes i ON p.id = i.publicacion_id
+WHERE c.usuario_id = $1;
+`;
     const { rows } = await pool.query(query, [usuario_id]);
     return rows;
   } catch (error) {
