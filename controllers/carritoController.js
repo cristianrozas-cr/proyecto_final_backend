@@ -20,18 +20,23 @@ const obtenerProductos = async (req, res) => {
 
 const actualizarCantidad = async (req, res) => {
   try {
-    const producto = await consultasCarrito.actualizarCantidadCarrito(req.body);
+    const { usuario_id, publicacion_id, cantidad } = req.body;
 
-    if (!producto) {
-      return res.status(404).json({ message: "Producto no encontrado en el carrito." });
+    // Verificar que la cantidad no sea menor a 1
+    if (cantidad < 1) {
+      return res.status(400).json({ error: "La cantidad debe ser al menos 1" });
     }
 
-    res.status(200).json({
-      message: "Cantidad del carrito actualizada correctamente",
-      producto
+    const resultado = await consultasCarrito.actualizarCantidadCarrito({
+      usuario_id,
+      publicacion_id,
+      cantidad,
     });
+
+    res.json(resultado); // Retornar la fila actualizada
   } catch (error) {
-    res.status(error.code || 500).json({ error: error.message });
+    console.error("Error al actualizar cantidad:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
