@@ -41,7 +41,7 @@ const obtenerCarrito = async (usuario_id) => {
 FROM carrito c
 INNER JOIN publicaciones p ON c.publicacion_id = p.id
 LEFT JOIN imagenes i ON p.id = i.publicacion_id
-WHERE c.usuario_id = $1 
+WHERE c.usuario_id = $1
 ORDER BY id;
 `;
     const { rows } = await pool.query(query, [usuario_id]);

@@ -19,7 +19,24 @@ const agregarPedidoDB = async ({publicacion_id, comprador_id, direccion_id, cant
 const obtenerPedidosDB = async (comprador_id) => {
     
     try {
-        const consulta = `SELECT * FROM pedidos WHERE comprador_id = $1;`;
+        const consulta = `SELECT 
+                p.id AS pedido_id,
+                p.cantidad,
+                p.comprador_id,
+                p.fecha_compra,
+                p.estado,
+                pub.id AS publicacion_id,
+                pub.titulo,
+                pub.descripcion,
+                pub.precio,
+                i.img1_portada,
+                i.img2,
+                i.img3,
+                i.img4
+            FROM pedidos p
+            INNER JOIN publicaciones pub ON p.publicacion_id = pub.id
+            INNER JOIN imagenes i ON pub.id = i.publicacion_id
+            WHERE p.comprador_id = $1;`;
         const values = [comprador_id];
         const { rows } = await pool.query(consulta, values);
         console.log(rows);
